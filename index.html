@@ -201,7 +201,7 @@
       <script src="javascripts/all.js"></script>
   </head>
 
-  <body class="index" data-languages="[&quot;shell&quot;,&quot;ruby&quot;,&quot;python&quot;,&quot;javascript&quot;]">
+  <body class="index" data-languages="[&quot;javascript&quot;]">
     <a href="#" id="nav-button">
       <span>
         NAV
@@ -211,9 +211,6 @@
     <div class="toc-wrapper">
       <img src="images/logo.png" class="logo" alt="Logo" />
         <div class="lang-selector">
-              <a href="#" data-language-name="shell">shell</a>
-              <a href="#" data-language-name="ruby">ruby</a>
-              <a href="#" data-language-name="python">python</a>
               <a href="#" data-language-name="javascript">javascript</a>
         </div>
         <div class="search">
@@ -240,11 +237,6 @@
           </li>
           <li>
             <a href="#use-maker-js-in-your-project" class="toc-h1 toc-link" data-title="use-maker-js-in-your-project">Use Maker.js in Your Project</a>
-              <ul class="toc-list-h2">
-                  <li>
-                    <a href="#license" class="toc-h2 toc-link" data-title="license">License</a>
-                  </li>
-              </ul>
           </li>
           <li>
             <a href="#errors" class="toc-h1 toc-link" data-title="errors">Errors</a>
@@ -303,37 +295,35 @@ with internal settlement services.</p>
 <h2 id='commands'>Commands</h2>
 <ul>
 <li><code>npm start</code> - start the dev server</li>
-<li><code>npm run build</code> - create build in <code>dist</code> folder</li>
+<li><code>npm run build:backend</code> - create backend build in <code>dist</code> folder</li>
+<li><code>npm run build:frontend</code> - create frontend build in <code>dist</code> folder</li>
 <li><code>npm run lint</code> - run an ESLint check</li>
 <li><code>npm run coverage</code> - run code coverage and generate report in the <code>coverage</code> folder</li>
 <li><code>npm test</code> - run all tests</li>
 <li><code>npm run test:watch</code> - run all tests in watch mode</li>
+<li><code>npm run test:net</code> - launch a Ganache test chain and deploy MakerDAO&#39;s contracts on it</li>
 </ul>
 <h1 id='use-maker-js-in-your-project'>Use Maker.js in Your Project</h1>
 <p><code>npm install @makerdao/makerdao-exchange-integration</code></p>
 
-<p>Import the necessary modules in your JS code:</p>
+<p>First, import the necessary modules in your JS code:</p>
 
 <p><code>import { Maker, ConfigFactory } from &#39;@makerdao/makerdao-exchange-integration&#39;;</code></p>
 
-<p>Then create a connected instance of the Maker class and use it to call CDP methods:</p>
-<pre class="highlight plaintext"><code>async setupFunction() {
-  const config = ConfigFactory.create('kovan');
+<p>Then create a connected instance of the Maker class and use it to call CDP methods, like you see in the JS snippet in the right panel.</p>
+<pre class="highlight javascript tab-javascript"><code><span class="nx">async</span> <span class="nx">setupFunction</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="nx">config</span> <span class="o">=</span> <span class="nx">ConfigFactory</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">'kovan'</span><span class="p">);</span>
 
-  return await new Maker(config);
-}
+  <span class="k">return</span> <span class="nx">await</span> <span class="k">new</span> <span class="nx">Maker</span><span class="p">(</span><span class="nx">config</span><span class="p">);</span>
+<span class="p">}</span>
 
-async someOtherFunction() {
-  const maker = await setupFunction();
-  const cdp = await maker.openCdp();
+<span class="nx">async</span> <span class="nx">someOtherFunction</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="nx">maker</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">setupFunction</span><span class="p">();</span>
+  <span class="kr">const</span> <span class="nx">cdp</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">openCdp</span><span class="p">();</span>
 
-  return await cdp.lockEth();
-}
-</code></pre><h2 id='license'>License</h2>
-<p><em>makerdao-exchange-integration</em> is available under MIT.</p>
-
-<p>This project was built on the excellent <a href="https://github.com/jluccisano/webpack-es6-boilerplate"><em>webpack-es6-boilerplate</em></a>.</p>
-<h1 id='errors'>Errors</h1>
+  <span class="k">return</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">lockEth</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre><h1 id='errors'>Errors</h1>
 <aside class="notice">
 This error section is stored in a separate file in <code>includes/_errors.md</code>. Slate allows you to optionally separate out your docs into many files...just save them to the <code>includes</code> folder and add them to the top of your <code>index.md</code>'s frontmatter. Files are included in the order listed.
 </aside>
@@ -395,9 +385,6 @@ This error section is stored in a separate file in <code>includes/_errors.md</co
       </div>
       <div class="dark-box">
           <div class="lang-selector">
-                <a href="#" data-language-name="shell">shell</a>
-                <a href="#" data-language-name="ruby">ruby</a>
-                <a href="#" data-language-name="python">python</a>
                 <a href="#" data-language-name="javascript">javascript</a>
           </div>
       </div>
