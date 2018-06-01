@@ -244,6 +244,14 @@
                   </li>
               </ul>
           </li>
+          <li>
+            <a href="#object-interfaces" class="toc-h1 toc-link" data-title="object-interfaces">Object interfaces</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#maker" class="toc-h2 toc-link" data-title="maker">Maker</a>
+                  </li>
+              </ul>
+          </li>
       </div>
         <ul class="toc-footer">
             <li><a href='https://github.com/lord/slate'>Documentation Powered by Slate</a></li>
@@ -336,7 +344,35 @@
 <li><code>npm run test:watch</code> - run all tests in watch mode</li>
 <li><code>npm run test:net</code> - launch a Ganache test chain and deploy MakerDAO&#39;s contracts on it</li>
 </ul>
+<h1 id='object-interfaces'>Object interfaces</h1><h2 id='maker'>Maker</h2>
+<p>Once you&#39;ve connected your instance of <code>maker</code> (following the instructions in the <code>Web3Service</code> section), you can use the <code>maker</code> interface to access the core library functionality.</p>
+<h3 id='service'><strong>service</strong></h3>
+<ul>
+<li><strong>Params:</strong> service (string)</li>
+<li><strong>Returns:</strong> service object</li>
+</ul>
 
+<p>The service function can be used to access services that were injected into your instance of <code>maker</code>. The service must be in the list of available services you passed to <code>ConfigFactory</code>.</p>
+<pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">priceFeedService</span> <span class="o">=</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'priceFeed'</span><span class="p">);</span>
+</code></pre><h3 id='opencdp'><strong>openCdp</strong></h3>
+<ul>
+<li><strong>Params:</strong> none</li>
+<li><strong>Returns:</strong> promise (resolves to new CDP object)</li>
+</ul>
+
+<p><code>maker.openCdp()</code> will create a new CDP, and then return the CDP object, which can be used to access other CDP functionality.</p>
+
+<p>By default, the promise will resolve when the transaction is mined.</p>
+<pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">newCdp</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">openCdp</span><span class="p">();</span>
+</code></pre><h3 id='getcdp'><strong>getCdp</strong></h3>
+<ul>
+<li><strong>Params:</strong> CDP ID (integer)</li>
+<li><strong>Returns:</strong> promise (resolves to CDP object)</li>
+</ul>
+
+<p><code>maker.getCdp(id)</code> creates a CDP object for an existing CDP. The CDP object can then be used to interact with your CDP.</p>
+<pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">cdp</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">getCdp</span><span class="p">(</span><span class="mi">614</span><span class="p">);</span>
+</code></pre>
       </div>
       <div class="dark-box">
           <div class="lang-selector">
