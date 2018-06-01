@@ -220,6 +220,12 @@
       <div id="toc" class="toc-list-h1">
           <li>
             <a href="#makerdao-exchange-integration" class="toc-h1 toc-link" data-title="makerdao-exchange-integration">MakerDAO Exchange Integration</a>
+          </li>
+          <li>
+            <a href="#makerdao-exchange-integration-2" class="toc-h1 toc-link" data-title="makerdao-exchange-integration">MakerDAO Exchange Integration</a>
+          </li>
+          <li>
+            <a href="#source-code-setup" class="toc-h1 toc-link" data-title="source-code-setup">Source code setup</a>
               <ul class="toc-list-h2">
                   <li>
                     <a href="#prerequisites" class="toc-h2 toc-link" data-title="prerequisites">Prerequisites</a>
@@ -228,7 +234,7 @@
                     <a href="#features" class="toc-h2 toc-link" data-title="features">Features</a>
                   </li>
                   <li>
-                    <a href="#start-dev-server" class="toc-h2 toc-link" data-title="start-dev-server">Start Dev Server</a>
+                    <a href="#inspect-contract-state" class="toc-h2 toc-link" data-title="inspect-contract-state">Inspect contract state</a>
                   </li>
                   <li>
                     <a href="#commands" class="toc-h2 toc-link" data-title="commands">Commands</a>
@@ -236,7 +242,7 @@
               </ul>
           </li>
           <li>
-            <a href="#use-maker-js-in-your-project" class="toc-h1 toc-link" data-title="use-maker-js-in-your-project">Use Maker.js in Your Project</a>
+            <a href="#npm-package-setup" class="toc-h1 toc-link" data-title="npm-package-setup">NPM Package Setup</a>
           </li>
           <li>
             <a href="#errors" class="toc-h1 toc-link" data-title="errors">Errors</a>
@@ -253,16 +259,27 @@
         <h1 id='makerdao-exchange-integration'>MakerDAO Exchange Integration</h1>
 <p><a href="https://travis-ci.org/jluccisano/webpack-es6-boilerplate"><img src="http://img.shields.io/travis/jluccisano/webpack-es6-boilerplate.svg" alt="tests" /></a>
 <a href="https://codecov.io/gh/jluccisano/webpack-es6-boilerplate"><img src="https://codecov.io/gh/jluccisano/webpack-es6-boilerplate/branch/master/graph/badge.svg" alt="coverage" /></a></p>
+<h1 id='makerdao-exchange-integration-2'>MakerDAO Exchange Integration</h1>
+<p><a href="https://travis-ci.org/jluccisano/webpack-es6-boilerplate"><img src="http://img.shields.io/travis/jluccisano/webpack-es6-boilerplate.svg" alt="tests" /></a>
+<a href="https://codecov.io/gh/jluccisano/webpack-es6-boilerplate"><img src="https://codecov.io/gh/jluccisano/webpack-es6-boilerplate/branch/master/graph/badge.svg" alt="coverage" /></a></p>
 
-<p>A toolkit for easy integration of MakerDAO smart contract functionality with 
-external platforms. </p>
+<p><strong>MakerDAO Exchange Integration</strong> is a JavaScript library that makes it easy to build applications on top of MakerDAO&#39;s platform of smart contracts. You can use Maker&#39;s contracts to open Collateralized Debt Positions, withdraw loans in Dai, trade tokens on OasisDEX, and more.</p>
 
-<p>If you&#39;re a cryptocurrency exchange looking to add leveraged ETH positions through 
-distributed DAI lending to your platform, you&#39;re in the right place. </p>
+<p>The library features a pluggable, service-based architecture, which allows users maximal control when integrating the Maker functionality into existing infrastructures. It also includes convenient configuration presets for out-of-the-box usability, a powerful smart contract state inspector, and support for both front-end and back-end applications.</p>
 
-<p>This library aims to support a wide range of platform architectures; from fully 
-decentralized with immediate on-chain settlement, to centralized exchange architectures 
-with internal settlement services.</p>
+<p>Maker&#39;s entire suite of contracts will eventually be accessible through this library—including the DAO governance and the upcoming multi-collateral release—but functionality is limited in the current alpha version to the following areas:</p>
+
+<ul>
+<li>Opening and shutting CDPs</li>
+<li>Locking and unlocking collateral</li>
+<li>Withdrawing and repaying Dai</li>
+<li>Automated token conversions</li>
+<li>Token contract functionality for WETH, PETH, MKR, Dai, and ETH</li>
+<li>Buying and selling MKR and Dai with built-in DEX integration</li>
+</ul>
+<h1 id='source-code-setup'>Source code setup</h1>
+<p><code>git clone https://github.com/makerdao/makerdao-integration-poc</code>
+<code>npm install</code></p>
 <h2 id='prerequisites'>Prerequisites</h2>
 <p><a href="https://nodejs.org"><img src="https://img.shields.io/node/v/webpack-es6-boilerplate.svg" alt="node" /></a>
 <a href="https://npmjs.com/"><img src="https://img.shields.io/badge/npm-5.3.0-blue.svg" alt="npm" /></a></p>
@@ -285,13 +302,8 @@ with internal settlement services.</p>
 <li><a href="https://facebook.github.io/jest/docs/en/getting-started.html">Jest</a> (v20.0.4)</li>
 <li><a href="http://sass-lang.com/guide">Sass</a></li>
 </ul>
-<h2 id='start-dev-server'>Start Dev Server</h2>
-<ol>
-<li><code>git clone https://github.com/makerdao/makerdao-integration-poc</code></li>
-<li>Run <code>npm install</code></li>
-<li>Start the dev server using <code>npm start</code></li>
-<li>Open <a href="http://localhost:9000">http://localhost:9000</a></li>
-</ol>
+<h2 id='inspect-contract-state'>Inspect contract state</h2>
+<p>Start the dev server using <code>npm start</code>, then open <a href="http://localhost:9000">http://localhost:9000</a></p>
 <h2 id='commands'>Commands</h2>
 <ul>
 <li><code>npm start</code> - start the dev server</li>
@@ -303,7 +315,7 @@ with internal settlement services.</p>
 <li><code>npm run test:watch</code> - run all tests in watch mode</li>
 <li><code>npm run test:net</code> - launch a Ganache test chain and deploy MakerDAO&#39;s contracts on it</li>
 </ul>
-<h1 id='use-maker-js-in-your-project'>Use Maker.js in Your Project</h1>
+<h1 id='npm-package-setup'>NPM Package Setup</h1>
 <p><code>npm install @makerdao/makerdao-exchange-integration</code></p>
 
 <p>First, import the necessary modules in your JS code:</p>
