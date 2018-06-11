@@ -472,7 +472,8 @@
 <p>Using the <code>maker</code> and <code>cdp</code> APIs, the program shown on the right opens a cdp, locks 0.25 ETH into it, draws out 50 Dai, and then logs information about our newly opened position to the console.</p>
 <h1 id='maker'>Maker</h1>
 <p>Once you&#39;ve connected your instance of <code>maker</code> (following the instructions in the <code>Web3Service</code> section), you can use the <code>maker</code> interface to access the core library functionality.</p>
-<h2 id='service'><strong>service</strong></h2>
+<h2 id='service'><strong>service</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">priceFeedService</span> <span class="o">=</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'priceFeed'</span><span class="p">);</span>
+</code></pre>
 <ul>
 <li><strong>Params:</strong> service (string)</li>
 <li><strong>Returns:</strong> service object</li>
@@ -481,8 +482,8 @@
 <p>The service function can be used to access services that were injected into your instance of <code>maker</code>. The service must be in the list of available services you passed to <code>ConfigFactory</code>.</p>
 
 <p><em>Note: see the <code>Custom Config Files</code> section further down for an example config file with a list of services</em></p>
-<pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">priceFeedService</span> <span class="o">=</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'priceFeed'</span><span class="p">);</span>
-</code></pre><h2 id='opencdp'><strong>openCdp</strong></h2>
+<h2 id='opencdp'><strong>openCdp</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">newCdp</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">openCdp</span><span class="p">();</span>
+</code></pre>
 <ul>
 <li><strong>Params:</strong> none</li>
 <li><strong>Returns:</strong> promise (resolves to new CDP object)</li>
@@ -491,26 +492,27 @@
 <p><code>maker.openCdp()</code> will create a new CDP, and then return the CDP object, which can be used to access other CDP functionality.</p>
 
 <p>By default, the promise will resolve when the transaction is mined.</p>
-<pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">newCdp</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">openCdp</span><span class="p">();</span>
-</code></pre><h2 id='getcdp'><strong>getCdp</strong></h2>
+<h2 id='getcdp'><strong>getCdp</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">cdp</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">getCdp</span><span class="p">(</span><span class="mi">614</span><span class="p">);</span>
+</code></pre>
 <ul>
 <li><strong>Params:</strong> CDP ID (integer)</li>
 <li><strong>Returns:</strong> promise (resolves to CDP object)</li>
 </ul>
 
 <p><code>maker.getCdp(id)</code> creates a CDP object for an existing CDP. The CDP object can then be used to interact with your CDP.</p>
-<pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">cdp</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">getCdp</span><span class="p">(</span><span class="mi">614</span><span class="p">);</span>
-</code></pre><h1 id='cdp'>CDP</h1>
+<h1 id='cdp'>CDP</h1>
 <p>Now that you&#39;ve used <code>maker</code> to either open a new CDP or retrieve an existing one, you can use the returned <code>cdp</code> object to call functions on it.</p>
-<h2 id='getcdpid'><strong>getCdpId</strong></h2>
+<h2 id='getcdpid'><strong>getCdpId</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getCdpId</span><span class="p">();</span>
+</code></pre>
 <ul>
 <li><strong>Params:</strong> none</li>
 <li><strong>Returns:</strong> promise (resolves to CDP ID)</li>
 </ul>
 
 <p>Use <code>cdp.getCdpId()</code> to retrieve the ID from a CDP object. You may need to use the ID as a parameter for other functions.</p>
-<pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getCdpId</span><span class="p">();</span>
-</code></pre><h2 id='getinfo'><strong>getInfo</strong></h2>
+<h2 id='getinfo'><strong>getInfo</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">info</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getInfo</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">lockedPeth</span> <span class="o">=</span> <span class="nx">info</span><span class="p">.</span><span class="nx">ink</span><span class="p">;</span>
+</code></pre>
 <ul>
 <li><strong>Params:</strong> none</li>
 <li><strong>Returns:</strong> promise (resolves to CDP info object)</li>
@@ -526,73 +528,73 @@
 </ul>
 
 <p>Please refer to the <a href="https://makerdao.com/whitepaper/DaiDec17WP.pdf">MakerDAO White Paper</a> or reach out on our <a href="https://chat.makerdao.com/home">community chat</a> if you need help understanding how these variables are used in the system.</p>
-<pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">info</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getInfo</span><span class="p">();</span>
-<span class="kr">const</span> <span class="nx">lockedPeth</span> <span class="o">=</span> <span class="nx">info</span><span class="p">.</span><span class="nx">ink</span><span class="p">;</span>
-</code></pre><h2 id='getcollateralamount'><strong>getCollateralAmount</strong></h2>
+<h2 id='getcollateralamount'><strong>getCollateralAmount</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">lockedPeth</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getCollateralAmount</span><span class="p">();</span>
+</code></pre>
 <ul>
 <li><strong>Params:</strong> none</li>
 <li><strong>Returns:</strong> promise (resolves to locked amount in PETH)</li>
 </ul>
 
 <p><code>cdp.getCollateralAmount()</code> returns the amount of locked collateral in the CDP.</p>
-<pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">lockedPeth</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getCollateralAmount</span><span class="p">();</span>
-</code></pre><h2 id='getdebtamount'><strong>getDebtAmount</strong></h2>
+<h2 id='getdebtamount'><strong>getDebtAmount</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">daiDebt</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getDebtAmount</span><span class="p">();</span>
+</code></pre>
 <ul>
 <li><strong>Params:</strong> none</li>
 <li><strong>Returns:</strong> promise (resolves to the amount of outstanding debt in Dai)</li>
 </ul>
 
 <p><code>cdp.getDebtAmount()</code> returns the amount of Dai that has been borrowed against the collateral in the CDP.</p>
-<pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">daiDebt</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getDebtAmount</span><span class="p">();</span>
-</code></pre><h2 id='locketh'><strong>lockEth</strong></h2>
+<h2 id='locketh'><strong>lockEth</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="k">return</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">lockEth</span><span class="p">(</span><span class="s1">'0.1'</span><span class="p">);</span>
+</code></pre>
 <ul>
 <li><strong>Params:</strong> amount to lock in the CDP (in ETH, as string)</li>
 <li><strong>Returns:</strong> promise (resolves to <code>transactionHybrid</code>)</li>
 </ul>
 
 <p><code>cdp.lockEth(eth)</code> abstracts the token conversions needed to lock collateral in a CDP. It first converts the ETH to WETH, then converts the WETH to PETH, then locks the PETH in the CDP.</p>
-<pre class="highlight javascript tab-javascript"><code><span class="k">return</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">lockEth</span><span class="p">(</span><span class="s1">'0.1'</span><span class="p">);</span>
-</code></pre><h2 id='drawdai'><strong>drawDai</strong></h2>
+<h2 id='drawdai'><strong>drawDai</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="k">return</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">drawDai</span><span class="p">(</span><span class="s1">'100'</span><span class="p">);</span>
+</code></pre>
 <ul>
 <li><strong>Params:</strong> amount to draw (in Dai, as string)</li>
 <li><strong>Returns:</strong> promise (resolves to <code>transactionHybrid</code>)</li>
 </ul>
 
 <p><code>cdp.drawDai(dai)</code> withdraws the specified amount of Dai as a loan against the collateral in the CDP. As such, it will fail if the CDP doesn&#39;t have enough PETH locked in it to remain at least 150% collateralized.</p>
-<pre class="highlight javascript tab-javascript"><code><span class="k">return</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">drawDai</span><span class="p">(</span><span class="s1">'100'</span><span class="p">);</span>
-</code></pre><h2 id='wipedai'><strong>wipeDai</strong></h2>
+<h2 id='wipedai'><strong>wipeDai</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="k">return</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">wipeDai</span><span class="p">(</span><span class="s1">'100'</span><span class="p">);</span>
+</code></pre>
 <ul>
 <li><strong>Params:</strong> amount to repay (in Dai, as string)</li>
 <li><strong>Returns:</strong> promise (resolves to <code>transactionHybrid</code>)</li>
 </ul>
 
 <p><code>cdp.wipeDai(dai)</code> sends Dai back to the CDP in order to repay some (or all) of its outstanding debt.</p>
-<pre class="highlight javascript tab-javascript"><code><span class="k">return</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">wipeDai</span><span class="p">(</span><span class="s1">'100'</span><span class="p">);</span>
-</code></pre><h2 id='freepeth'><strong>freePeth</strong></h2>
+
+<p><em>Note: CDPs accumulate MKR governance debt over their lifetime. This must be paid when wiping dai debt, and thus MKR must be acquired before caling this method.</em></p>
+<h2 id='freepeth'><strong>freePeth</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="k">return</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">freePeth</span><span class="p">(</span><span class="s1">'0.1'</span><span class="p">);</span>
+</code></pre>
 <ul>
 <li><strong>Params:</strong> amount to withdraw (in PETH, as string)</li>
 <li><strong>Returns:</strong> promise (resolves to <code>transactionHybrid</code>)</li>
 </ul>
 
 <p><code>cdp.freePeth(peth)</code> withdraws the specified amount of PETH and returns it to the owner&#39;s address. As such, the contract will only allow you to free PETH that&#39;s locked in excess of 150% of the CDP&#39;s outstanding debt.</p>
-<pre class="highlight javascript tab-javascript"><code><span class="k">return</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">freePeth</span><span class="p">(</span><span class="s1">'0.1'</span><span class="p">);</span>
-</code></pre><h2 id='give'><strong>give</strong></h2>
+<h2 id='give'><strong>give</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="k">return</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">give</span><span class="p">(</span><span class="s1">'0x046ce6b8ecb159645d3a605051ee37ba93b6efcc'</span><span class="p">);</span>
+</code></pre>
 <ul>
 <li><strong>Params:</strong> Ethereum address (string)</li>
 <li><strong>Returns:</strong> promise (resolves to <code>transactionHybrid</code>)</li>
 </ul>
 
 <p><code>cdp.give(address)</code> transfers ownership of the CDP from the current owner to the address you provide as an argument.</p>
-<pre class="highlight javascript tab-javascript"><code><span class="k">return</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">give</span><span class="p">(</span><span class="s1">'0x046ce6b8ecb159645d3a605051ee37ba93b6efcc'</span><span class="p">);</span>
-</code></pre><h2 id='shut'><strong>shut</strong></h2>
+<h2 id='shut'><strong>shut</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="k">return</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">shut</span><span class="p">();</span>
+</code></pre>
 <ul>
 <li><strong>Params:</strong> none</li>
 <li><strong>Returns:</strong> promise (resolves to <code>transactionHybrid</code>)</li>
 </ul>
 
 <p><code>cdp.shut()</code> will close the CDP and return the collateral, in PETH, to its owner. It will fail if the CDP still has outstanding debt.</p>
-<pre class="highlight javascript tab-javascript"><code><span class="k">return</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">shut</span><span class="p">();</span>
-</code></pre><h1 id='price-feed-service'>Price Feed Service</h1><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">priceFeed</span> <span class="o">=</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'priceFeed'</span><span class="p">);</span>
+<h1 id='price-feed-service'>Price Feed Service</h1><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">priceFeed</span> <span class="o">=</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'priceFeed'</span><span class="p">);</span>
 </code></pre>
 <p>Retrieve the PriceFeedService through <code>Maker.service(&#39;priceFeed&#39;)</code>.</p>
 
