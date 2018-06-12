@@ -410,11 +410,8 @@
 <span class="nt">&lt;/script&gt;</span>
 </code></pre>
 <p>This library is also accessible via a <a href="https://github.com/umdjs/umd">UMD module</a>.</p>
-<h1 id='getting-started'>Getting Started</h1><h3 id='config-factory'>Config Factory</h3><pre class="highlight javascript tab-javascript"><code><span class="c1">// create a config from the 'kovan' preset</span>
-
-<span class="kr">const</span> <span class="nx">config</span> <span class="o">=</span> <span class="nx">ConfigFactory</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">'kovan'</span><span class="p">);</span>
-</code></pre>
-<p>When instantiating a <code>Maker</code> object, you must pass in a config. To make this easy, we have created a <code>ConfigFactory</code> which provides you with a few presets cofigs.</p>
+<h1 id='getting-started'>Getting Started</h1><h3 id='config-factory'>Config Factory</h3>
+<p>When instantiating a <code>Maker</code> object, you must pass in a configuration preset.</p>
 
 <p>The current presets are as follows:</p>
 
@@ -423,7 +420,7 @@
 
 <ul>
 <li>Connects you to the Kovan Testnet using Infura</li>
-<li>Signs transactions using an internal private key</li>
+<li>Signs transactions using a private key that you provide</li>
 </ul></li>
 <li><code>&#39;decentralized-oasis-without-proxies&#39;</code>
 
@@ -436,7 +433,7 @@
 <p><em>Note: refer to the <code>Custom Config Files</code> section further down for details on customizing the config file</em></p>
 
 <p><em>Side Note: Proxies are contracts that will let you perform multiple actions with a single transaction (eg <code>open</code> -&gt; <code>lock</code> -&gt; <code>draw</code>). This is a safer way to perform sequential actions and will be supported by this library.</em></p>
-<h3 id='instantiation'>Instantiation</h3><pre class="highlight javascript tab-javascript"><code>  <span class="kr">const</span> <span class="nx">maker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Maker</span><span class="p">(</span><span class="nx">config</span><span class="p">);</span>
+<h3 id='instantiation'>Instantiation</h3><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">maker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Maker</span><span class="p">(</span><span class="s2">"kovan"</span><span class="p">,</span> <span class="p">{</span> <span class="na">privateKey</span><span class="p">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">KOVAN_PRIVATE_KEY</span> <span class="p">});</span>
 
   <span class="kr">const</span> <span class="nx">cdp</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">openCdp</span><span class="p">();</span>
 </code></pre>
@@ -447,13 +444,9 @@
 <p>Use that class to open a cdp and create a cdp object.</p>
 
 <p><code>maker.openCdp()</code></p>
-<h2 id='example'>Example</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">import</span> <span class="p">{</span> 
-  <span class="nx">Maker</span><span class="p">,</span> 
-  <span class="nx">ConfigFactory</span> 
-<span class="p">}</span> <span class="nx">from</span> <span class="s1">'@makerdao/makerdao-exchange-integration'</span><span class="p">;</span>
+<h2 id='example'>Example</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">Maker</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'@makerdao/makerdao-exchange-integration'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">config</span> <span class="o">=</span> <span class="nx">ConfigFactory</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">'decentralized-oasis-without-proxies'</span><span class="p">);</span>
-<span class="kr">const</span> <span class="nx">maker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Maker</span><span class="p">(</span><span class="nx">config</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">maker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Maker</span><span class="p">(</span><span class="s2">"kovan"</span><span class="p">,</span> <span class="p">{</span> <span class="na">privateKey</span><span class="p">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">KOVAN_PRIVATE_KEY</span> <span class="p">});</span>
 
 <span class="nx">async</span> <span class="nx">openLockDraw</span><span class="p">()</span> <span class="p">{</span>
   <span class="nx">cdp</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">openCdp</span><span class="p">();</span>
