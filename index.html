@@ -262,7 +262,10 @@
                     <a href="#getinfo" class="toc-h2 toc-link" data-title="strong-getinfo-strong"><strong>getInfo</strong></a>
                   </li>
                   <li>
-                    <a href="#getdebtamount" class="toc-h2 toc-link" data-title="strong-getdebtamount-strong"><strong>getDebtAmount</strong></a>
+                    <a href="#getdebtvalueindai" class="toc-h2 toc-link" data-title="strong-getdebtvalueindai-strong"><strong>getDebtValueInDai</strong></a>
+                  </li>
+                  <li>
+                    <a href="#getdebtvalueinusd" class="toc-h2 toc-link" data-title="strong-getdebtvalueinusd-strong"><strong>getDebtValueInUSD</strong></a>
                   </li>
                   <li>
                     <a href="#getcollateralizationratio" class="toc-h2 toc-link" data-title="strong-getcollateralizationratio-strong"><strong>getCollateralizationRatio</strong></a>
@@ -328,6 +331,9 @@
           <li>
             <a href="#ether-cdp-service" class="toc-h1 toc-link" data-title="ether-cdp-service">Ether CDP Service</a>
               <ul class="toc-list-h2">
+                  <li>
+                    <a href="#getliquidationratio" class="toc-h2 toc-link" data-title="strong-getliquidationratio-strong"><strong>getLiquidationRatio</strong></a>
+                  </li>
                   <li>
                     <a href="#getliquidationpenalty" class="toc-h2 toc-link" data-title="strong-getliquidationpenalty-strong"><strong>getLiquidationPenalty</strong></a>
                   </li>
@@ -589,14 +595,22 @@ sign transactions using testnet-managed keys.</li>
 </ul>
 
 <p>Please refer to the <a href="https://makerdao.com/whitepaper/DaiDec17WP.pdf">MakerDAO White Paper</a> or reach out on our <a href="https://chat.makerdao.com/home">community chat</a> if you need help understanding how these variables are used in the system.</p>
-<h2 id='getdebtamount'><strong>getDebtAmount</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">daiDebt</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getDebtAmount</span><span class="p">();</span>
+<h2 id='getdebtvalueindai'><strong>getDebtValueInDai</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">daiDebt</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getDebtValueInDai</span><span class="p">();</span>
 </code></pre>
 <ul>
 <li><strong>Params:</strong> none</li>
 <li><strong>Returns:</strong> promise (resolves to the amount of outstanding debt in Dai)</li>
 </ul>
 
-<p><code>cdp.getDebtAmount()</code> returns the amount of Dai that has been borrowed against the collateral in the CDP.</p>
+<p><code>cdp.getDebtValueDai()</code> returns the amount of Dai that has been borrowed against the collateral in the CDP.</p>
+<h2 id='getdebtvalueinusd'><strong>getDebtValueInUSD</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">debtInUSD</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getDebtValueInUSD</span><span class="p">();</span>
+</code></pre>
+<ul>
+<li><strong>Params:</strong> none</li>
+<li><strong>Returns:</strong> promise (resolves to the amount of outstanding debt in USD)</li>
+</ul>
+
+<p><code>cdp.getDebtValueInUSD()</code> returns the value of the borrowed Dai in USD terms.  This will return the same value as <code>cdp.getDebtValueInDai</code> as long as the Target Price is 1.</p>
 <h2 id='getcollateralizationratio'><strong>getCollateralizationRatio</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">ratio</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getCollateralizationRatio</span><span class="p">();</span>
 </code></pre>
 <ul>
@@ -758,6 +772,14 @@ reported by the oracles in the Maker system.</p>
 <p>Retrieve the Ethereum CDP Service through Maker.service(&#39;ethereumCdp&#39;).</p>
 
 <p>The EthereumCdp exposes the risk parameter information for the CDP type whose collateral is Ether (in single-collateral Dai, this is the only CDP Type)</p>
+<h2 id='getliquidationratio'><strong>getLiquidationRatio</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">ratio</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">ethCdp</span><span class="p">.</span><span class="nx">getLiquidationRatio</span><span class="p">();</span>
+</code></pre>
+<ul>
+<li><strong>Params:</strong> none</li>
+<li><strong>Returns:</strong> promise (resolves to liquidation ratio)</li>
+</ul>
+
+<p><code>getLiquidationPenalty()</code> returns a decimal representation of the liquidation penalty, e.g. 1.5</p>
 <h2 id='getliquidationpenalty'><strong>getLiquidationPenalty</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">penalty</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">ethCdp</span><span class="p">.</span><span class="nx">getLiquidationPenalty</span><span class="p">();</span>
 </code></pre>
 <ul>
