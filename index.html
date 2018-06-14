@@ -262,10 +262,25 @@
                     <a href="#getinfo" class="toc-h2 toc-link" data-title="strong-getinfo-strong"><strong>getInfo</strong></a>
                   </li>
                   <li>
-                    <a href="#getcollateralamount" class="toc-h2 toc-link" data-title="strong-getcollateralamount-strong"><strong>getCollateralAmount</strong></a>
+                    <a href="#getdebtamount" class="toc-h2 toc-link" data-title="strong-getdebtamount-strong"><strong>getDebtAmount</strong></a>
                   </li>
                   <li>
-                    <a href="#getdebtamount" class="toc-h2 toc-link" data-title="strong-getdebtamount-strong"><strong>getDebtAmount</strong></a>
+                    <a href="#getcollateralizationratio" class="toc-h2 toc-link" data-title="strong-getcollateralizationratio-strong"><strong>getCollateralizationRatio</strong></a>
+                  </li>
+                  <li>
+                    <a href="#getliquidationpriceethusd" class="toc-h2 toc-link" data-title="strong-getliquidationpriceethusd-strong"><strong>getLiquidationPriceEthUSD</strong></a>
+                  </li>
+                  <li>
+                    <a href="#getcollateralvalueinusd" class="toc-h2 toc-link" data-title="strong-getcollateralvalueinusd-strong"><strong>getCollateralValueInUSD</strong></a>
+                  </li>
+                  <li>
+                    <a href="#getcollateralvalueineth" class="toc-h2 toc-link" data-title="strong-getcollateralvalueineth-strong"><strong>getCollateralValueInEth</strong></a>
+                  </li>
+                  <li>
+                    <a href="#getcollateralvalueinpeth" class="toc-h2 toc-link" data-title="strong-getcollateralvalueinpeth-strong"><strong>getCollateralValueInPeth</strong></a>
+                  </li>
+                  <li>
+                    <a href="#issafe" class="toc-h2 toc-link" data-title="strong-issafe-strong"><strong>isSafe</strong></a>
                   </li>
                   <li>
                     <a href="#locketh" class="toc-h2 toc-link" data-title="strong-locketh-strong"><strong>lockEth</strong></a>
@@ -294,13 +309,30 @@
                     <a href="#getethprice" class="toc-h2 toc-link" data-title="getethprice">getEthPrice</a>
                   </li>
                   <li>
+                    <a href="#getpethprice" class="toc-h2 toc-link" data-title="getpethprice">getPethPrice</a>
+                  </li>
+                  <li>
                     <a href="#getmkrprice" class="toc-h2 toc-link" data-title="getmkrprice">getMkrPrice</a>
+                  </li>
+                  <li>
+                    <a href="#getwethtopethratio" class="toc-h2 toc-link" data-title="getwethtopethratio">getWethToPethRatio</a>
                   </li>
                   <li>
                     <a href="#setethprice" class="toc-h2 toc-link" data-title="setethprice">setEthPrice</a>
                   </li>
                   <li>
                     <a href="#setmkrprice" class="toc-h2 toc-link" data-title="setmkrprice">setMkrPrice</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#ether-cdp-service" class="toc-h1 toc-link" data-title="ether-cdp-service">Ether CDP Service</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#getliquidationpenalty" class="toc-h2 toc-link" data-title="strong-getliquidationpenalty-strong"><strong>getLiquidationPenalty</strong></a>
+                  </li>
+                  <li>
+                    <a href="#getannualgovernancefee" class="toc-h2 toc-link" data-title="strong-getannualgovernancefee-strong"><strong>getAnnualGovernanceFee</strong></a>
                   </li>
               </ul>
           </li>
@@ -312,6 +344,17 @@
                   </li>
                   <li>
                     <a href="#buydai" class="toc-h2 toc-link" data-title="buydai">buyDai</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#system-status" class="toc-h1 toc-link" data-title="system-status">System Status</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#getsystemcollateralization" class="toc-h2 toc-link" data-title="strong-getsystemcollateralization-strong"><strong>getSystemCollateralization</strong></a>
+                  </li>
+                  <li>
+                    <a href="#gettargetprice" class="toc-h2 toc-link" data-title="strong-gettargetprice-strong"><strong>getTargetPrice</strong></a>
                   </li>
               </ul>
           </li>
@@ -546,14 +589,6 @@ sign transactions using testnet-managed keys.</li>
 </ul>
 
 <p>Please refer to the <a href="https://makerdao.com/whitepaper/DaiDec17WP.pdf">MakerDAO White Paper</a> or reach out on our <a href="https://chat.makerdao.com/home">community chat</a> if you need help understanding how these variables are used in the system.</p>
-<h2 id='getcollateralamount'><strong>getCollateralAmount</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">lockedPeth</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getCollateralAmount</span><span class="p">();</span>
-</code></pre>
-<ul>
-<li><strong>Params:</strong> none</li>
-<li><strong>Returns:</strong> promise (resolves to locked amount in PETH)</li>
-</ul>
-
-<p><code>cdp.getCollateralAmount()</code> returns the amount of locked collateral in the CDP.</p>
 <h2 id='getdebtamount'><strong>getDebtAmount</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">daiDebt</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getDebtAmount</span><span class="p">();</span>
 </code></pre>
 <ul>
@@ -562,6 +597,54 @@ sign transactions using testnet-managed keys.</li>
 </ul>
 
 <p><code>cdp.getDebtAmount()</code> returns the amount of Dai that has been borrowed against the collateral in the CDP.</p>
+<h2 id='getcollateralizationratio'><strong>getCollateralizationRatio</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">ratio</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getCollateralizationRatio</span><span class="p">();</span>
+</code></pre>
+<ul>
+<li><strong>Params:</strong> none</li>
+<li><strong>Returns:</strong> promise (resolves to the collateralization ratio)</li>
+</ul>
+
+<p><code>cdp.getCollateralizationRatio()</code> returns the USD value of the collateral in the CDP divided by the USD value of the Dai debt for the CDP, e.g. 2.5</p>
+<h2 id='getliquidationpriceethusd'><strong>getLiquidationPriceEthUSD</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">ratio</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getLiquidationPriceEthUSD</span><span class="p">();</span>
+</code></pre>
+<ul>
+<li><strong>Params:</strong> none</li>
+<li><strong>Returns:</strong> promise (resolves to the liquidation price)</li>
+</ul>
+
+<p><code>cdp.getLiquidationPriceEthUSD()</code> returns the price of Ether in USD that causes the CDP to become unsafe (able to be liquidated), all other factors constant.</p>
+<h2 id='getcollateralvalueinusd'><strong>getCollateralValueInUSD</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">collateral</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getCollateralAmountInUSD</span><span class="p">();</span>
+</code></pre>
+<ul>
+<li><strong>Params:</strong> none</li>
+<li><strong>Returns:</strong> promise (resolves to collateral amount)</li>
+</ul>
+
+<p><code>cdp.getCollateralAmountInUSD()</code> returns value of the collateral in the CDP in terms of USD</p>
+<h2 id='getcollateralvalueineth'><strong>getCollateralValueInEth</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">collateral</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getCollateralAmountInEth</span><span class="p">();</span>
+</code></pre>
+<ul>
+<li><strong>Params:</strong> none</li>
+<li><strong>Returns:</strong> promise (resolves to collateral amount)</li>
+</ul>
+
+<p><code>cdp.getCollateralAmountInUSD()</code> returns the value of the collateral in the CDP in terms of Ether</p>
+<h2 id='getcollateralvalueinpeth'><strong>getCollateralValueInPeth</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">collateral</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getCollateralAmountInPeth</span><span class="p">();</span>
+</code></pre>
+<ul>
+<li><strong>Params:</strong> none</li>
+<li><strong>Returns:</strong> promise (resolves to collateral amount)</li>
+</ul>
+
+<p><code>cdp.getCollateralAmountInUSD()</code> returns the value of the collateral in the CDP in terms of Peth</p>
+<h2 id='issafe'><strong>isSafe</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">ratio</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">isSafe</span><span class="p">();</span>
+</code></pre>
+<ul>
+<li><strong>Params:</strong> none</li>
+<li><strong>Returns:</strong> promise (resolves to boolean)</li>
+</ul>
+
+<p><code>cdp.isSafe()</code> returns true if the cdp is safe, that is, ...[TODO] make sure target price is properly included in liq. coll. calculations</p>
 <h2 id='locketh'><strong>lockEth</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="k">return</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">lockEth</span><span class="p">(</span><span class="s1">'0.1'</span><span class="p">);</span>
 </code></pre>
 <ul>
@@ -620,20 +703,77 @@ sign transactions using testnet-managed keys.</li>
 reported by the oracles in the Maker system.</p>
 <h2 id='getethprice'>getEthPrice</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">price</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">priceFeed</span><span class="p">.</span><span class="nx">getEthPrice</span><span class="p">();</span>
 </code></pre>
+<ul>
+<li><strong>Params:</strong> none</li>
+<li><strong>Returns:</strong> promise (resolves to ether price)</li>
+</ul>
+
 <p>Get the current USD price of ETH.</p>
+<h2 id='getpethprice'>getPethPrice</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">price</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">priceFeed</span><span class="p">.</span><span class="nx">getPethPrice</span><span class="p">();</span>
+</code></pre>
+<ul>
+<li><strong>Params:</strong> none</li>
+<li><strong>Returns:</strong> promise (resolves to peth price)</li>
+</ul>
+
+<p>Get the current USD price of PETH.</p>
 <h2 id='getmkrprice'>getMkrPrice</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">price</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">priceFeed</span><span class="p">.</span><span class="nx">getMkrPrice</span><span class="p">();</span>
 </code></pre>
+<ul>
+<li><strong>Params:</strong> none</li>
+<li><strong>Returns:</strong> promise (resolves to mkr price)</li>
+</ul>
+
 <p>Get the current USD price of the governance token MKR.</p>
+<h2 id='getwethtopethratio'>getWethToPethRatio</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">ethToPeth</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">priceFeed</span><span class="p">.</span><span class="nx">getWethToPethRatio</span><span class="p">();</span>
+</code></pre>
+<ul>
+<li><strong>Params:</strong> none</li>
+<li><strong>Returns:</strong> promise (resolves to weth to peth ratio)</li>
+</ul>
+
+<p>Get the price of PETH in ETH, e.g. 1.01 means 1 PETH is worth 1.01 ETH</p>
 <h2 id='setethprice'>setEthPrice</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">await</span> <span class="nx">priceFeed</span><span class="p">.</span><span class="nx">setEthPrice</span><span class="p">(</span><span class="s1">'475.00'</span><span class="p">);</span>
 </code></pre>
+<ul>
+<li><strong>Params:</strong> none</li>
+<li><strong>Returns:</strong> TODO</li>
+</ul>
+
 <p>Set the current USD price of ETH. </p>
 
 <p>This requires the necessary permissions and will only be useful in a testing environment.</p>
 <h2 id='setmkrprice'>setMkrPrice</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">await</span> <span class="nx">priceFeed</span><span class="p">.</span><span class="nx">setMkrPrice</span><span class="p">(</span><span class="s1">'950.00'</span><span class="p">);</span>
 </code></pre>
+<ul>
+<li><strong>Params:</strong> none</li>
+<li><strong>Returns:</strong> TODO</li>
+</ul>
+
 <p>Set the current USD price of the governance token MKR. </p>
 
 <p>This requires the necessary permissions and will only be useful in a testing environment.</p>
+<h1 id='ether-cdp-service'>Ether CDP Service</h1><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">ethCdp</span> <span class="o">=</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'ethereumCdp'</span><span class="p">);</span>
+</code></pre>
+<p>Retrieve the Ethereum CDP Service through Maker.service(&#39;ethereumCdp&#39;).</p>
+
+<p>The EthereumCdp exposes the risk parameter information for the CDP type whose collateral is Ether (in single-collateral Dai, this is the only CDP Type)</p>
+<h2 id='getliquidationpenalty'><strong>getLiquidationPenalty</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">penalty</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">ethCdp</span><span class="p">.</span><span class="nx">getLiquidationPenalty</span><span class="p">();</span>
+</code></pre>
+<ul>
+<li><strong>Params:</strong> none</li>
+<li><strong>Returns:</strong> promise (resolves to liquidation penalty)</li>
+</ul>
+
+<p><code>getLiquidationPenalty()</code> returns a decimal representation of the liquidation penalty, e.g. 0.13</p>
+<h2 id='getannualgovernancefee'><strong>getAnnualGovernanceFee</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">fee</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">ethCdp</span><span class="p">.</span><span class="nx">getAnnualGovernanceFee</span><span class="p">();</span>
+</code></pre>
+<ul>
+<li><strong>Params:</strong> none</li>
+<li><strong>Returns:</strong> promise (resolves to yearly governance fee)</li>
+</ul>
+
+<p><code>getAnnualGovernanceFee()</code> returns a decimal representation of the liquidation penalty, e.g. 0.005</p>
 <h1 id='exchange-service'>Exchange Service</h1><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">exchange</span> <span class="o">=</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'exchange'</span><span class="p">);</span>
 </code></pre>
 <p>Retrieve the OasisExchangeService (or alternative implementation) 
@@ -661,6 +801,25 @@ OasisExchangeService implementation uses the OasisDEX OTC market for this. </p>
 <li><code>tokenSymbol</code> - Token to give in return.</li>
 <li><code>minFillAmount</code> - Maximum amount to give in return.</li>
 </ul>
+<h1 id='system-status'>System Status</h1><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">ethCdp</span> <span class="o">=</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'ethereumCdp'</span><span class="p">);</span>
+</code></pre>
+<p>To access system status information, retrieve the Ethereum CDP Service through Maker.service(&#39;ethereumCdp&#39;).</p>
+<h2 id='getsystemcollateralization'><strong>getSystemCollateralization</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">systemRatio</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">ethCdp</span><span class="p">.</span><span class="nx">getSystemCollateralization</span><span class="p">();</span>
+</code></pre>
+<ul>
+<li><strong>Params:</strong> none</li>
+<li><strong>Returns:</strong> promise (resolves to system collateralization ratio)</li>
+</ul>
+
+<p><code>getSystemCollateralization()</code> returns the collateralization ratio for the entire system, e.g. 2.75</p>
+<h2 id='gettargetprice'><strong>getTargetPrice</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">targetPrice</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">ethCdp</span><span class="p">.</span><span class="nx">getTargetPrice</span><span class="p">();</span>
+</code></pre>
+<ul>
+<li><strong>Params:</strong> none</li>
+<li><strong>Returns:</strong> promise (resolves to target price)</li>
+</ul>
+
+<p><code>getTargetPrice()</code> returns the target price of Dai in USD, that is, the value to which Dai is soft-pegged, e.g. 1.0</p>
 <h1 id='advanced-configuration'>Advanced Configuration</h1><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">customMaker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Maker</span><span class="p">(</span><span class="s1">'http'</span><span class="p">,</span> <span class="p">{</span>
   <span class="na">log</span><span class="p">:</span> <span class="s1">'BunyanLogger'</span><span class="p">,</span>
   <span class="na">exchange</span><span class="p">:</span> <span class="s1">'ZeroExExchangeService'</span><span class="p">,</span>
