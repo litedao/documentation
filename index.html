@@ -773,9 +773,9 @@ reported by the oracles in the Maker system.</p>
 <p>Set the current USD price of the governance token MKR. </p>
 
 <p>This requires the necessary permissions and will only be useful in a testing environment.</p>
-<h1 id='ether-cdp-service'>Ether CDP Service</h1><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">ethCdp</span> <span class="o">=</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'ethereumCdp'</span><span class="p">);</span>
+<h1 id='ether-cdp-service'>Ether CDP Service</h1><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">ethCdp</span> <span class="o">=</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'cdp'</span><span class="p">);</span>
 </code></pre>
-<p>Retrieve the Ethereum CDP Service through Maker.service(&#39;ethereumCdp&#39;).</p>
+<p>Retrieve the Ethereum CDP Service through Maker.service(&#39;cdp&#39;).</p>
 
 <p>The EthereumCdp exposes the risk parameter information for the CDP type whose collateral is Ether (in single-collateral Dai, this is the only CDP Type)</p>
 <h2 id='getliquidationratio'><strong>getLiquidationRatio</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">ratio</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">ethCdp</span><span class="p">.</span><span class="nx">getLiquidationRatio</span><span class="p">();</span>
@@ -829,9 +829,9 @@ OasisExchangeService implementation uses the OasisDEX OTC market for this. </p>
 <li><code>tokenSymbol</code> - Token to give in return.</li>
 <li><code>minFillAmount</code> - Maximum amount to give in return.</li>
 </ul>
-<h1 id='system-status'>System Status</h1><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">ethCdp</span> <span class="o">=</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'ethereumCdp'</span><span class="p">);</span>
+<h1 id='system-status'>System Status</h1><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">ethCdp</span> <span class="o">=</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'cdp'</span><span class="p">);</span>
 </code></pre>
-<p>To access system status information, retrieve the Ethereum CDP Service through Maker.service(&#39;ethereumCdp&#39;).</p>
+<p>To access system status information, retrieve the Ethereum CDP Service through Maker.service(&#39;cdp&#39;).</p>
 <h2 id='getsystemcollateralization'><strong>getSystemCollateralization</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">systemRatio</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">ethCdp</span><span class="p">.</span><span class="nx">getSystemCollateralization</span><span class="p">();</span>
 </code></pre>
 <ul>
