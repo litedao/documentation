@@ -664,7 +664,7 @@ sign transactions using testnet-managed keys.</li>
 <li><strong>Returns:</strong> promise (resolves to boolean)</li>
 </ul>
 
-<p><code>cdp.isSafe()</code> returns true if the cdp is safe, that is, ...[TODO] make sure target price is properly included in liq. coll. calculations</p>
+<p><code>cdp.isSafe()</code> returns true if the cdp is safe, that is if the USD value of the collateral in the CDP is greater than or equal to USD value of the debt in the CDP multiplied by the liquidation ratio.</p>
 <h2 id='locketh'><strong>lockEth</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="k">return</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">lockEth</span><span class="p">(</span><span class="s1">'0.1'</span><span class="p">);</span>
 </code></pre>
 <ul>
