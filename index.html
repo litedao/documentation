@@ -329,7 +329,7 @@
               </ul>
           </li>
           <li>
-            <a href="#ether-cdp-service" class="toc-h1 toc-link" data-title="ether-cdp-service">Ether CDP Service</a>
+            <a href="#eth-cdp-service" class="toc-h1 toc-link" data-title="eth-cdp-service">ETH CDP Service</a>
               <ul class="toc-list-h2">
                   <li>
                     <a href="#getliquidationratio" class="toc-h2 toc-link" data-title="strong-getliquidationratio-strong"><strong>getLiquidationRatio</strong></a>
@@ -773,11 +773,11 @@ reported by the oracles in the Maker system.</p>
 <p>Set the current USD price of the governance token MKR. </p>
 
 <p>This requires the necessary permissions and will only be useful in a testing environment.</p>
-<h1 id='ether-cdp-service'>Ether CDP Service</h1><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">ethCdp</span> <span class="o">=</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'cdp'</span><span class="p">);</span>
+<h1 id='eth-cdp-service'>ETH CDP Service</h1><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">ethCdp</span> <span class="o">=</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'cdp'</span><span class="p">);</span>
 </code></pre>
-<p>Retrieve the Ethereum CDP Service through Maker.service(&#39;cdp&#39;).</p>
+<p>Retrieve the ETH CDP Service through Maker.service(&#39;cdp&#39;).</p>
 
-<p>The EthereumCdp exposes the risk parameter information for the CDP type whose collateral is Ether (in single-collateral Dai, this is the only CDP Type)</p>
+<p>The ETH CDP Service exposes the risk parameter information for the Ether CDP type (in single-collateral Dai, this is the only CDP Type)</p>
 <h2 id='getliquidationratio'><strong>getLiquidationRatio</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">ratio</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">ethCdp</span><span class="p">.</span><span class="nx">getLiquidationRatio</span><span class="p">();</span>
 </code></pre>
 <ul>
