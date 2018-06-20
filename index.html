@@ -365,6 +365,23 @@
               </ul>
           </li>
           <li>
+            <a href="#events" class="toc-h1 toc-link" data-title="events">Events</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#wildcards" class="toc-h2 toc-link" data-title="wildcards">Wildcards</a>
+                  </li>
+                  <li>
+                    <a href="#event-object" class="toc-h2 toc-link" data-title="event-object">Event Object</a>
+                  </li>
+                  <li>
+                    <a href="#maker-object" class="toc-h2 toc-link" data-title="maker-object">Maker Object</a>
+                  </li>
+                  <li>
+                    <a href="#cdp-object" class="toc-h2 toc-link" data-title="cdp-object">CDP Object</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
             <a href="#advanced-configuration" class="toc-h1 toc-link" data-title="advanced-configuration">Advanced Configuration</a>
           </li>
           <li>
@@ -848,6 +865,109 @@ OasisExchangeService implementation uses the OasisDEX OTC market for this. </p>
 </ul>
 
 <p><code>getTargetPrice()</code> returns the target price of Dai in USD, that is, the value to which Dai is soft-pegged, e.g. 1.0</p>
+<h1 id='events'>Events</h1>
+<p>The event pipeline allows developers to easily create real-time applications by letting them listen for important state changes and lifecycle events.</p>
+<h3 id='wildcards'>Wildcards</h3>
+<p>An event name passed to any event emitter method can contain a wildcard (the <code>*</code> character). A wildcard may appear as <code>foo/*</code>, <code>foo/bar/*</code>, or simply <code>*</code>. </p>
+
+<p><code>*</code> matches one sub-level.</p>
+
+<p>e.g. <code>price/*</code> will trigger on both <code>price/USD_ETH</code> and <code>price/MKR_USD</code> but not <code>price/MKR_USD/foo</code>.</p>
+
+<p><code>**</code> matches all sub-levels.</p>
+
+<p>e.g. <code>price/**</code> will trigger on <code>price/USD_ETH</code>, <code>price/MKR_USD</code>, and <code>price/MKR_USD/foo</code>.</p>
+<h3 id='event-object'>Event Object</h3><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+    <span class="nl">type</span><span class="p">:</span> <span class="o">&lt;</span><span class="nx">event_type</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="nx">payload</span><span class="p">:</span> <span class="o">&lt;</span><span class="nx">event_payload</span><span class="o">&gt;</span><span class="p">,</span> <span class="cm">/* if applicable */</span>
+    <span class="nx">index</span><span class="p">:</span> <span class="o">&lt;</span><span class="nx">event_sequence_number</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="nx">block</span><span class="p">:</span> <span class="o">&lt;</span><span class="nx">latest_block_when_emitted</span><span class="o">&gt;</span>
+<span class="p">}</span>
+</code></pre>
+<p>Triggered events will recieve the object shown on the left.</p>
+
+<ul>
+<li><code>&lt;event_type&gt;</code> - the name of the event </li>
+<li><code>&lt;event_payload&gt;</code> - the new state data sent with the event</li>
+<li><code>&lt;event_sequence_number&gt;</code> - a sequentially increasing index</li>
+<li><code>&lt;latest_block_when_emitted&gt;</code> - the current block at the time of the emit</li>
+</ul>
+<h2 id='maker-object'>Maker Object</h2><h3 id='price'><code>Price</code></h3><pre class="highlight javascript tab-javascript"><code><span class="nx">maker</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'price/ETH_USD'</span><span class="p">,</span> <span class="nx">eventObj</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="p">{</span> <span class="nx">price</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">eventObj</span><span class="p">.</span><span class="nx">payload</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'ETH price changed to'</span><span class="p">,</span> <span class="nx">price</span><span class="p">);</span>
+<span class="p">})</span>
+</code></pre>
+<table><thead>
+<tr>
+<th>Event Name</th>
+<th>Payload</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>price/ETH_USD</code></td>
+<td>{ price }</td>
+</tr>
+<tr>
+<td><code>price/MKR_USD</code></td>
+<td>{ price }</td>
+</tr>
+<tr>
+<td><code>price/WETH_PETH</code></td>
+<td>{ ratio }</td>
+</tr>
+</tbody></table>
+<h3 id='web3'><code>Web3</code></h3><pre class="highlight javascript tab-javascript"><code><span class="nx">maker</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'web3/AUTHENTICATED'</span><span class="p">,</span> <span class="nx">eventObj</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="p">{</span> <span class="nx">account</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">eventObj</span><span class="p">.</span><span class="nx">payload</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'web3 authenticated with account'</span><span class="p">,</span> <span class="nx">account</span><span class="p">);</span>
+<span class="p">})</span>
+</code></pre>
+<table><thead>
+<tr>
+<th>Event Name</th>
+<th>Payload</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>web3/INITIALIZED</code></td>
+<td>{ provider: { type, url } }</td>
+</tr>
+<tr>
+<td><code>web3/CONNECTED</code></td>
+<td>{ api, network, node }</td>
+</tr>
+<tr>
+<td><code>web3/AUTHENTICATED</code></td>
+<td>{ account }</td>
+</tr>
+<tr>
+<td><code>web3/DEAUTHENTICATED</code></td>
+<td>{ }</td>
+</tr>
+<tr>
+<td><code>web3/DISCONNECTED</code></td>
+<td>{ }</td>
+</tr>
+</tbody></table>
+<h2 id='cdp-object'>CDP Object</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">cdp</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'DEBT'</span> <span class="nx">eventObj</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="p">{</span> <span class="nx">dai</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">eventObj</span><span class="p">.</span><span class="nx">payload</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Your cdp is now has a dai dedt of'</span><span class="p">,</span> <span class="nx">dai</span><span class="p">);</span>
+<span class="p">})</span>
+</code></pre>
+<table><thead>
+<tr>
+<th>Event Name</th>
+<th>Payload</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>COLLATERAL</code></td>
+<td>{ USD, ETH }</td>
+</tr>
+<tr>
+<td><code>DEBT</code></td>
+<td>{ dai }</td>
+</tr>
+</tbody></table>
 <h1 id='advanced-configuration'>Advanced Configuration</h1><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">customMaker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Maker</span><span class="p">(</span><span class="s1">'http'</span><span class="p">,</span> <span class="p">{</span>
   <span class="na">log</span><span class="p">:</span> <span class="s1">'BunyanLogger'</span><span class="p">,</span>
   <span class="na">exchange</span><span class="p">:</span> <span class="s1">'ZeroExExchangeService'</span><span class="p">,</span>
