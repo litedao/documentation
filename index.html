@@ -306,25 +306,25 @@
               </ul>
           </li>
           <li>
-            <a href="#price-feed-service" class="toc-h1 toc-link" data-title="price-feed-service">Price Feed Service</a>
+            <a href="#price-service" class="toc-h1 toc-link" data-title="price-service">Price Service</a>
               <ul class="toc-list-h2">
                   <li>
                     <a href="#getethprice" class="toc-h2 toc-link" data-title="getethprice">getEthPrice</a>
                   </li>
                   <li>
-                    <a href="#getpethprice" class="toc-h2 toc-link" data-title="getpethprice">getPethPrice</a>
-                  </li>
-                  <li>
                     <a href="#getmkrprice" class="toc-h2 toc-link" data-title="getmkrprice">getMkrPrice</a>
                   </li>
                   <li>
-                    <a href="#getwethtopethratio" class="toc-h2 toc-link" data-title="getwethtopethratio">getWethToPethRatio</a>
+                    <a href="#getpethprice" class="toc-h2 toc-link" data-title="getpethprice">getPethPrice</a>
                   </li>
                   <li>
                     <a href="#setethprice" class="toc-h2 toc-link" data-title="setethprice">setEthPrice</a>
                   </li>
                   <li>
                     <a href="#setmkrprice" class="toc-h2 toc-link" data-title="setmkrprice">setMkrPrice</a>
+                  </li>
+                  <li>
+                    <a href="#getwethtopethratio" class="toc-h2 toc-link" data-title="getwethtopethratio">getWethToPethRatio</a>
                   </li>
               </ul>
           </li>
@@ -378,6 +378,17 @@
                   </li>
                   <li>
                     <a href="#cdp-object" class="toc-h2 toc-link" data-title="cdp-object">CDP Object</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#transactions" class="toc-h1 toc-link" data-title="transactions">Transactions</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#basic-usage" class="toc-h2 toc-link" data-title="basic-usage">Basic usage</a>
+                  </li>
+                  <li>
+                    <a href="#advanced-usage" class="toc-h2 toc-link" data-title="advanced-usage">Advanced usage</a>
                   </li>
               </ul>
           </li>
@@ -564,7 +575,7 @@ sign transactions using testnet-managed keys.</li>
 <li>Set this to <code>false</code> to reduce the verbosity of logging.</li>
 </ul></li>
 </ul>
-<h2 id='service'><strong>service</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">priceFeedService</span> <span class="o">=</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'priceFeed'</span><span class="p">);</span>
+<h2 id='service'><strong>service</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">priceService</span> <span class="o">=</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'price'</span><span class="p">);</span>
 </code></pre>
 <ul>
 <li><strong>Params:</strong> service (string)</li>
@@ -732,64 +743,34 @@ sign transactions using testnet-managed keys.</li>
 </ul>
 
 <p><code>cdp.shut()</code> will close the CDP and return the collateral, in PETH, to its owner. It will fail if the CDP still has outstanding debt.</p>
-<h1 id='price-feed-service'>Price Feed Service</h1><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">priceFeed</span> <span class="o">=</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'priceFeed'</span><span class="p">);</span>
+<h1 id='price-service'>Price Service</h1><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">price</span> <span class="o">=</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'price'</span><span class="p">);</span>
 </code></pre>
-<p>Retrieve the PriceFeedService through <code>Maker.service(&#39;priceFeed&#39;)</code>.</p>
+<p>Retrieve the PriceService through <code>Maker.service(&#39;price&#39;)</code>.</p>
 
-<p>The PriceFeedService exposes the collateral and governance tokens price information that is 
+<p>The PriceService exposes the collateral and governance tokens&#39; price information that is 
 reported by the oracles in the Maker system.</p>
-<h2 id='getethprice'>getEthPrice</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">price</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">priceFeed</span><span class="p">.</span><span class="nx">getEthPrice</span><span class="p">();</span>
+<h2 id='getethprice'>getEthPrice</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">ethPrice</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">price</span><span class="p">.</span><span class="nx">getEthPrice</span><span class="p">();</span>
 </code></pre>
-<ul>
-<li><strong>Params:</strong> none</li>
-<li><strong>Returns:</strong> promise (resolves to ether price)</li>
-</ul>
-
 <p>Get the current USD price of ETH.</p>
-<h2 id='getpethprice'>getPethPrice</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">price</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">priceFeed</span><span class="p">.</span><span class="nx">getPethPrice</span><span class="p">();</span>
+<h2 id='getmkrprice'>getMkrPrice</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">mkrPrice</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">price</span><span class="p">.</span><span class="nx">getMkrPrice</span><span class="p">();</span>
 </code></pre>
-<ul>
-<li><strong>Params:</strong> none</li>
-<li><strong>Returns:</strong> promise (resolves to peth price)</li>
-</ul>
-
-<p>Get the current USD price of PETH.</p>
-<h2 id='getmkrprice'>getMkrPrice</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">price</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">priceFeed</span><span class="p">.</span><span class="nx">getMkrPrice</span><span class="p">();</span>
-</code></pre>
-<ul>
-<li><strong>Params:</strong> none</li>
-<li><strong>Returns:</strong> promise (resolves to mkr price)</li>
-</ul>
-
 <p>Get the current USD price of the governance token MKR.</p>
-<h2 id='getwethtopethratio'>getWethToPethRatio</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">ethToPeth</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">priceFeed</span><span class="p">.</span><span class="nx">getWethToPethRatio</span><span class="p">();</span>
+<h2 id='getpethprice'>getPethPrice</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">await</span> <span class="nx">pethPrice</span> <span class="o">=</span> <span class="nx">price</span><span class="p">.</span><span class="nx">getPethPrice</span><span class="p">();</span>
 </code></pre>
-<ul>
-<li><strong>Params:</strong> none</li>
-<li><strong>Returns:</strong> promise (resolves to weth to peth ratio)</li>
-</ul>
-
-<p>Get the price of PETH in ETH, e.g. 1.01 means 1 PETH is worth 1.01 ETH</p>
-<h2 id='setethprice'>setEthPrice</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">await</span> <span class="nx">priceFeed</span><span class="p">.</span><span class="nx">setEthPrice</span><span class="p">(</span><span class="s1">'475.00'</span><span class="p">);</span>
+<p>Get the current USD price of PETH (pooled ethereum) according to the Maker price oracle.</p>
+<h2 id='setethprice'>setEthPrice</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">await</span> <span class="nx">price</span><span class="p">.</span><span class="nx">setEthPrice</span><span class="p">(</span><span class="s1">'475.00'</span><span class="p">);</span>
 </code></pre>
-<ul>
-<li><strong>Params:</strong> none</li>
-<li><strong>Returns:</strong> TODO</li>
-</ul>
-
 <p>Set the current USD price of ETH. </p>
 
 <p>This requires the necessary permissions and will only be useful in a testing environment.</p>
-<h2 id='setmkrprice'>setMkrPrice</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">await</span> <span class="nx">priceFeed</span><span class="p">.</span><span class="nx">setMkrPrice</span><span class="p">(</span><span class="s1">'950.00'</span><span class="p">);</span>
+<h2 id='setmkrprice'>setMkrPrice</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">await</span> <span class="nx">price</span><span class="p">.</span><span class="nx">setMkrPrice</span><span class="p">(</span><span class="s1">'950.00'</span><span class="p">);</span>
 </code></pre>
-<ul>
-<li><strong>Params:</strong> none</li>
-<li><strong>Returns:</strong> TODO</li>
-</ul>
-
 <p>Set the current USD price of the governance token MKR. </p>
 
 <p>This requires the necessary permissions and will only be useful in a testing environment.</p>
+<h2 id='getwethtopethratio'>getWethToPethRatio</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">await</span> <span class="nx">price</span><span class="p">.</span><span class="nx">getWethToPethRatio</span><span class="p">();</span>
+</code></pre>
+<p>Returns the current W-ETH to PETH ratio.</p>
 <h1 id='eth-cdp-service'>ETH CDP Service</h1><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">ethCdp</span> <span class="o">=</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'cdp'</span><span class="p">);</span>
 </code></pre>
 <p>Retrieve the ETH CDP Service through Maker.service(&#39;cdp&#39;).</p>
@@ -868,7 +849,7 @@ OasisExchangeService implementation uses the OasisDEX OTC market for this. </p>
 <h1 id='events'>Events</h1>
 <p>The event pipeline allows developers to easily create real-time applications by letting them listen for important state changes and lifecycle events.</p>
 <h3 id='wildcards'>Wildcards</h3>
-<p>An event name passed to any event emitter method can contain a wildcard (the <code>*</code> character). A wildcard may appear as <code>foo/*</code>, <code>foo/bar/*</code>, or simply <code>*</code>. </p>
+<p>An event name passed to any event emitter method can contain a wildcard (the <code>*</code> character). A wildcard may appear as <code>foo/*</code>, <code>foo/bar/*</code>, or simply <code>*</code>.</p>
 
 <p><code>*</code> matches one sub-level.</p>
 
@@ -884,10 +865,10 @@ OasisExchangeService implementation uses the OasisDEX OTC market for this. </p>
     <span class="nx">block</span><span class="p">:</span> <span class="o">&lt;</span><span class="nx">latest_block_when_emitted</span><span class="o">&gt;</span>
 <span class="p">}</span>
 </code></pre>
-<p>Triggered events will recieve the object shown on the left.</p>
+<p>Triggered events will recieve the object shown on the right.</p>
 
 <ul>
-<li><code>&lt;event_type&gt;</code> - the name of the event </li>
+<li><code>&lt;event_type&gt;</code> - the name of the event</li>
 <li><code>&lt;event_payload&gt;</code> - the new state data sent with the event</li>
 <li><code>&lt;event_sequence_number&gt;</code> - a sequentially increasing index</li>
 <li><code>&lt;latest_block_when_emitted&gt;</code> - the current block at the time of the emit</li>
@@ -948,9 +929,9 @@ OasisExchangeService implementation uses the OasisDEX OTC market for this. </p>
 <td>{ }</td>
 </tr>
 </tbody></table>
-<h2 id='cdp-object'>CDP Object</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">cdp</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'DEBT'</span> <span class="nx">eventObj</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<h2 id='cdp-object'>CDP Object</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">cdp</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'DEBT'</span><span class="p">,</span> <span class="nx">eventObj</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="kr">const</span> <span class="p">{</span> <span class="nx">dai</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">eventObj</span><span class="p">.</span><span class="nx">payload</span><span class="p">;</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Your cdp is now has a dai dedt of'</span><span class="p">,</span> <span class="nx">dai</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Your cdp is now has a dai debt of'</span><span class="p">,</span> <span class="nx">dai</span><span class="p">);</span>
 <span class="p">})</span>
 </code></pre>
 <table><thead>
@@ -968,6 +949,36 @@ OasisExchangeService implementation uses the OasisDEX OTC market for this. </p>
 <td>{ dai }</td>
 </tr>
 </tbody></table>
+<h1 id='transactions'>Transactions</h1><h3 id='basic-usage'>Basic usage</h3><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">cdp</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">openCdp</span><span class="p">();</span>
+</code></pre>
+<p>Each function in our API that creates a transaction on the blockchain returns a
+promise which resolves when the transaction is mined.</p>
+<h3 id='advanced-usage'>Advanced usage</h3><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">cdpPromise</span> <span class="o">=</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">openCdp</span><span class="p">();</span>
+
+<span class="c1">// the transaction is being sent to the blockchain;</span>
+<span class="c1">// if not already pending, it will be pending soon</span>
+
+<span class="nx">cdpPromise</span><span class="p">.</span><span class="nx">onPending</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'pending!'</span><span class="p">));</span>
+<span class="nx">cdpPromise</span><span class="p">.</span><span class="nx">onMined</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'mined!'</span><span class="p">));</span>
+<span class="nx">cdpPromise</span><span class="p">.</span><span class="nx">onFinalized</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'finalized!'</span><span class="p">));</span>
+
+<span class="kr">const</span> <span class="nx">cdp</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdpPromise</span><span class="p">;</span>
+
+<span class="c1">// now the transaction is mined</span>
+<span class="c1">// and the onMined callback has been called</span>
+
+<span class="c1">// if you are using the onFinalized callback, you have to</span>
+<span class="c1">// call this method at some point.</span>
+<span class="nx">await</span> <span class="nx">cdpPromise</span><span class="p">.</span><span class="nx">confirm</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="c1">// 5 = the number of blocks to wait; the default is 3</span>
+
+<span class="c1">// now there are five new blocks after the transaction's block</span>
+<span class="c1">// and the onFinalized callback has been called</span>
+</code></pre>
+<p>The promises also have additional methods which can be used to trigger
+callbacks when the transaction is pending, or after a certain number of new
+blocks have been added after the block containing the transaction (when the
+transaction is &quot;finalized&quot;).</p>
 <h1 id='advanced-configuration'>Advanced Configuration</h1><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">customMaker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Maker</span><span class="p">(</span><span class="s1">'http'</span><span class="p">,</span> <span class="p">{</span>
   <span class="na">log</span><span class="p">:</span> <span class="s1">'BunyanLogger'</span><span class="p">,</span>
   <span class="na">exchange</span><span class="p">:</span> <span class="s1">'ZeroExExchangeService'</span><span class="p">,</span>
