@@ -268,6 +268,12 @@
                     <a href="#getdebtvalueinusd" class="toc-h2 toc-link" data-title="strong-getdebtvalueinusd-strong"><strong>getDebtValueInUSD</strong></a>
                   </li>
                   <li>
+                    <a href="#getmkrfeeinusd" class="toc-h2 toc-link" data-title="strong-getmkrfeeinusd-strong"><strong>getMkrFeeInUSD</strong></a>
+                  </li>
+                  <li>
+                    <a href="#getmkrfeeinmkr" class="toc-h2 toc-link" data-title="strong-getmkrfeeinmkr-strong"><strong>getMkrFeeInMkr</strong></a>
+                  </li>
+                  <li>
                     <a href="#getcollateralizationratio" class="toc-h2 toc-link" data-title="strong-getcollateralizationratio-strong"><strong>getCollateralizationRatio</strong></a>
                   </li>
                   <li>
@@ -623,9 +629,9 @@ sign transactions using testnet-managed keys.</li>
 
 <ul>
 <li>lad: The Ethereum address associated with the owner of the CDP</li>
-<li>ink: Amount of collateral locked in the CDP</li>
-<li>art: Outstanding normalized debt (tax only)</li>
-<li>ire: Outstanding normalized debt</li>
+<li>ink: Amount of PETH collateral locked in the CDP</li>
+<li>art: Outstanding &quot;normalized&quot; debt (tax only)</li>
+<li>ire: Outstanding &quot;normalized&quot; debt</li>
 </ul>
 
 <p>Please refer to the <a href="https://makerdao.com/whitepaper/DaiDec17WP.pdf">MakerDAO White Paper</a> or reach out on our <a href="https://chat.makerdao.com/home">community chat</a> if you need help understanding how these variables are used in the system.</p>
@@ -645,6 +651,22 @@ sign transactions using testnet-managed keys.</li>
 </ul>
 
 <p><code>cdp.getDebtValueInUSD()</code> returns the value of the borrowed Dai in USD terms.  This will return the same value as <code>cdp.getDebtValueInDai</code> as long as the Target Price is 1.</p>
+<h2 id='getmkrfeeinusd'><strong>getMkrFeeInUSD</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">feeInUSD</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getMkrFeeInUSD</span><span class="p">();</span>
+</code></pre>
+<ul>
+<li><strong>Params:</strong> none</li>
+<li><strong>Returns:</strong> promise (resolves to the value of the accrued governance fee in USD)</li>
+</ul>
+
+<p><code>cdp.getMkrFeeInUSD()</code> returns the USD value of the accrued governance fee.</p>
+<h2 id='getmkrfeeinmkr'><strong>getMkrFeeInMkr</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">feeInMkr</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getMkrFeeInMkr</span><span class="p">();</span>
+</code></pre>
+<ul>
+<li><strong>Params:</strong> none</li>
+<li><strong>Returns:</strong> promise (resolves to the value of the accrued governance fee in MKR)</li>
+</ul>
+
+<p><code>cdp.getMkrFeeInMkr()</code> returns the amount of MKR token needed to pay off the accrued governance fee</p>
 <h2 id='getcollateralizationratio'><strong>getCollateralizationRatio</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">ratio</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getCollateralizationRatio</span><span class="p">();</span>
 </code></pre>
 <ul>
@@ -661,30 +683,30 @@ sign transactions using testnet-managed keys.</li>
 </ul>
 
 <p><code>cdp.getLiquidationPriceEthUSD()</code> returns the price of Ether in USD that causes the CDP to become unsafe (able to be liquidated), all other factors constant.</p>
-<h2 id='getcollateralvalueinusd'><strong>getCollateralValueInUSD</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">collateral</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getCollateralAmountInUSD</span><span class="p">();</span>
+<h2 id='getcollateralvalueinusd'><strong>getCollateralValueInUSD</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">collateral</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getCollateralValueInUSD</span><span class="p">();</span>
 </code></pre>
 <ul>
 <li><strong>Params:</strong> none</li>
 <li><strong>Returns:</strong> promise (resolves to collateral amount)</li>
 </ul>
 
-<p><code>cdp.getCollateralAmountInUSD()</code> returns value of the collateral in the CDP in terms of USD</p>
-<h2 id='getcollateralvalueineth'><strong>getCollateralValueInEth</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">collateral</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getCollateralAmountInEth</span><span class="p">();</span>
+<p><code>cdp.getCollateralValueInUSD()</code> returns value of the collateral in the CDP in terms of USD</p>
+<h2 id='getcollateralvalueineth'><strong>getCollateralValueInEth</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">collateral</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getCollateralValueInEth</span><span class="p">();</span>
 </code></pre>
 <ul>
 <li><strong>Params:</strong> none</li>
 <li><strong>Returns:</strong> promise (resolves to collateral amount)</li>
 </ul>
 
-<p><code>cdp.getCollateralAmountInUSD()</code> returns the value of the collateral in the CDP in terms of Ether</p>
-<h2 id='getcollateralvalueinpeth'><strong>getCollateralValueInPeth</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">collateral</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getCollateralAmountInPeth</span><span class="p">();</span>
+<p><code>cdp.getCollateralValueInEth()</code> returns the value of the collateral in the CDP in terms of Ether</p>
+<h2 id='getcollateralvalueinpeth'><strong>getCollateralValueInPeth</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">collateral</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getCollateralValueInPeth</span><span class="p">();</span>
 </code></pre>
 <ul>
 <li><strong>Params:</strong> none</li>
 <li><strong>Returns:</strong> promise (resolves to collateral amount)</li>
 </ul>
 
-<p><code>cdp.getCollateralAmountInUSD()</code> returns the value of the collateral in the CDP in terms of Peth</p>
+<p><code>cdp.getCollateralValueInPeth()</code> returns the value of the collateral in the CDP in terms of Peth</p>
 <h2 id='issafe'><strong>isSafe</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">ratio</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">isSafe</span><span class="p">();</span>
 </code></pre>
 <ul>
