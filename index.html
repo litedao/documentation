@@ -629,9 +629,9 @@ sign transactions using testnet-managed keys.</li>
 
 <ul>
 <li>lad: The Ethereum address associated with the owner of the CDP</li>
-<li>ink: Amount of PETH collateral locked in the CDP</li>
-<li>art: Outstanding &quot;normalized&quot; debt (tax only)</li>
-<li>ire: Outstanding &quot;normalized&quot; debt</li>
+<li>ink: Amount of PETH collateral locked in the CDP (this returns the same value as <code>cdp.getCollateralValueInPeth()</code>)</li>
+<li>art: Outstanding &quot;normalized&quot; debt - tax only (this is not the actual debt.  Use one of the getDebtValue functions for that)</li>
+<li>ire: Outstanding &quot;normalized&quot; debt (this is not the actual total amount owed.  Use one of the getDebtValue and getMkrFee functions for that)</li>
 </ul>
 
 <p>Please refer to the <a href="https://makerdao.com/whitepaper/DaiDec17WP.pdf">MakerDAO White Paper</a> or reach out on our <a href="https://chat.makerdao.com/home">community chat</a> if you need help understanding how these variables are used in the system.</p>
