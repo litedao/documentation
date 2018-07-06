@@ -250,6 +250,9 @@
                   <li>
                     <a href="#getcdp" class="toc-h2 toc-link" data-title="strong-getcdp-strong"><strong>getCdp</strong></a>
                   </li>
+                  <li>
+                    <a href="#units" class="toc-h2 toc-link" data-title="units">Units</a>
+                  </li>
               </ul>
           </li>
           <li>
@@ -468,8 +471,8 @@
 <span class="nx">async</span> <span class="kd">function</span> <span class="nx">openLockDraw</span><span class="p">()</span> <span class="p">{</span>
   <span class="nx">cdp</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">openCdp</span><span class="p">();</span>
 
-  <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">lockEth</span><span class="p">(</span><span class="s1">'0.25'</span><span class="p">);</span>
-  <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">drawDai</span><span class="p">(</span><span class="s1">'50'</span><span class="p">);</span>
+  <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">lockEth</span><span class="p">(</span><span class="mf">0.25</span><span class="p">);</span>
+  <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">drawDai</span><span class="p">(</span><span class="mi">50</span><span class="p">);</span>
 
   <span class="kr">const</span> <span class="nx">info</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getInfo</span><span class="p">();</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">info</span><span class="p">);</span>
@@ -607,6 +610,26 @@ sign transactions using testnet-managed keys.</li>
 </ul>
 
 <p><code>maker.getCdp(id)</code> creates a CDP object for an existing CDP. The CDP object can then be used to interact with your CDP.</p>
+<h2 id='units'>Units</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">import</span> <span class="nx">Maker</span> <span class="nx">from</span> <span class="s1">'@makerdao/makerdao-exchange-integration'</span><span class="p">;</span>
+<span class="kr">const</span> <span class="p">{</span> <span class="nx">MKR</span><span class="p">,</span> <span class="nx">DAI</span><span class="p">,</span> <span class="nx">ETH</span><span class="p">,</span> <span class="nx">WETH</span><span class="p">,</span> <span class="nx">PETH</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">Maker</span><span class="p">;</span>
+
+<span class="c1">// These are all identical:</span>
+
+<span class="c1">// each method has a default type</span>
+<span class="nx">cdp</span><span class="p">.</span><span class="nx">lockEth</span><span class="p">(</span><span class="mf">0.25</span><span class="p">);</span>
+<span class="nx">cdp</span><span class="p">.</span><span class="nx">lockEth</span><span class="p">(</span><span class="s1">'0.25'</span><span class="p">);</span>
+
+<span class="c1">// you can pass in a currency unit instance</span>
+<span class="nx">cdp</span><span class="p">.</span><span class="nx">lockEth</span><span class="p">(</span><span class="nx">ETH</span><span class="p">(</span><span class="mf">0.25</span><span class="p">));</span>
+<span class="nx">cdp</span><span class="p">.</span><span class="nx">lockEth</span><span class="p">(</span><span class="nx">ETH</span><span class="p">.</span><span class="nx">wei</span><span class="p">(</span><span class="mi">250000000000000000</span><span class="p">));</span>
+
+<span class="c1">// you can pass the unit as a second argument</span>
+<span class="nx">cdp</span><span class="p">.</span><span class="nx">lockEth</span><span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="nx">ETH</span><span class="p">);</span>
+<span class="nx">cdp</span><span class="p">.</span><span class="nx">lockEth</span><span class="p">(</span><span class="mi">250000000000000000</span><span class="p">,</span> <span class="nx">ETH</span><span class="p">.</span><span class="nx">wei</span><span class="p">);</span>
+</code></pre>
+<p>Methods that take numerical values as input can also take instances of token
+classes that the library provides. These are useful for managing precision,
+keeping track of units, and passing in wei values.</p>
 <h1 id='cdp'>CDP</h1>
 <p>Now that you&#39;ve used <code>maker</code> to either open a new CDP or retrieve an existing one, you can use the returned <code>cdp</code> object to call functions on it.</p>
 <h2 id='getid'><strong>getId</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getId</span><span class="p">();</span>
@@ -715,15 +738,15 @@ sign transactions using testnet-managed keys.</li>
 </ul>
 
 <p><code>cdp.isSafe()</code> returns true if the cdp is safe, that is if the USD value of the collateral in the CDP is greater than or equal to USD value of the debt in the CDP multiplied by the liquidation ratio.</p>
-<h2 id='locketh'><strong>lockEth</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="k">return</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">lockEth</span><span class="p">(</span><span class="s1">'0.1'</span><span class="p">);</span>
+<h2 id='locketh'><strong>lockEth</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="k">return</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">lockEth</span><span class="p">(</span><span class="nx">myWeiAmount</span><span class="p">,</span> <span class="nx">ETH</span><span class="p">.</span><span class="nx">wei</span><span class="p">);</span>
 </code></pre>
 <ul>
-<li><strong>Params:</strong> amount to lock in the CDP (in ETH, as string)</li>
+<li><strong>Params:</strong> amount to lock in the CDP, in units defined by the price service.</li>
 <li><strong>Returns:</strong> promise (resolves to <code>transactionHybrid</code>)</li>
 </ul>
 
 <p><code>cdp.lockEth(eth)</code> abstracts the token conversions needed to lock collateral in a CDP. It first converts the ETH to WETH, then converts the WETH to PETH, then locks the PETH in the CDP.</p>
-<h2 id='drawdai'><strong>drawDai</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="k">return</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">drawDai</span><span class="p">(</span><span class="s1">'100'</span><span class="p">);</span>
+<h2 id='drawdai'><strong>drawDai</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="k">return</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">drawDai</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
 </code></pre>
 <ul>
 <li><strong>Params:</strong> amount to draw (in Dai, as string)</li>
@@ -731,7 +754,11 @@ sign transactions using testnet-managed keys.</li>
 </ul>
 
 <p><code>cdp.drawDai(dai)</code> withdraws the specified amount of Dai as a loan against the collateral in the CDP. As such, it will fail if the CDP doesn&#39;t have enough PETH locked in it to remain at least 150% collateralized.</p>
-<h2 id='wipedai'><strong>wipeDai</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="k">return</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">wipeDai</span><span class="p">(</span><span class="s1">'100'</span><span class="p">);</span>
+<h2 id='wipedai'><strong>wipeDai</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="k">return</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">wipeDai</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+<span class="c1">// or </span>
+<span class="k">return</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">wipeDai</span><span class="p">(</span><span class="nx">myWeiAmount</span><span class="p">,</span> <span class="nx">ETH</span><span class="p">.</span><span class="nx">wei</span><span class="p">);</span>
+<span class="c1">// or</span>
+<span class="k">return</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">wipeDai</span><span class="p">(</span><span class="nx">myDaiAmount</span><span class="p">,</span> <span class="nx">ETH</span><span class="p">.</span><span class="nx">dai</span><span class="p">);</span>
 </code></pre>
 <ul>
 <li><strong>Params:</strong> amount to repay (in Dai, as string)</li>
@@ -741,10 +768,12 @@ sign transactions using testnet-managed keys.</li>
 <p><code>cdp.wipeDai(dai)</code> sends Dai back to the CDP in order to repay some (or all) of its outstanding debt.</p>
 
 <p><em>Note: CDPs accumulate MKR governance debt over their lifetime. This must be paid when wiping dai debt, and thus MKR must be acquired before calling this method.</em></p>
-<h2 id='freepeth'><strong>freePeth</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="k">return</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">freePeth</span><span class="p">(</span><span class="s1">'0.1'</span><span class="p">);</span>
+<h2 id='freepeth'><strong>freePeth</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="k">return</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">freePeth</span><span class="p">(</span><span class="nx">myWeiAmount</span><span class="p">,</span> <span class="nx">ETH</span><span class="p">.</span><span class="nx">wei</span><span class="p">);</span>
+<span class="c1">// or</span>
+<span class="k">return</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">freePeth</span><span class="p">(</span><span class="nx">myPethAmount</span><span class="p">,</span> <span class="nx">ETH</span><span class="p">.</span><span class="nx">peth</span><span class="p">);</span>
 </code></pre>
 <ul>
-<li><strong>Params:</strong> amount to withdraw (in PETH, as string)</li>
+<li><strong>Params:</strong> amount of Peth collateral to free from the CDP, in units defined by the price service.</li>
 <li><strong>Returns:</strong> promise (resolves to <code>transactionHybrid</code>)</li>
 </ul>
 
@@ -780,12 +809,12 @@ reported by the oracles in the Maker system.</p>
 <h2 id='getpethprice'>getPethPrice</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">await</span> <span class="nx">pethPrice</span> <span class="o">=</span> <span class="nx">price</span><span class="p">.</span><span class="nx">getPethPrice</span><span class="p">();</span>
 </code></pre>
 <p>Get the current USD price of PETH (pooled ethereum) according to the Maker price oracle.</p>
-<h2 id='setethprice'>setEthPrice</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">await</span> <span class="nx">price</span><span class="p">.</span><span class="nx">setEthPrice</span><span class="p">(</span><span class="s1">'475.00'</span><span class="p">);</span>
+<h2 id='setethprice'>setEthPrice</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">await</span> <span class="nx">price</span><span class="p">.</span><span class="nx">setEthPrice</span><span class="p">(</span><span class="mi">475</span><span class="p">);</span>
 </code></pre>
 <p>Set the current USD price of ETH. </p>
 
 <p>This requires the necessary permissions and will only be useful in a testing environment.</p>
-<h2 id='setmkrprice'>setMkrPrice</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">await</span> <span class="nx">price</span><span class="p">.</span><span class="nx">setMkrPrice</span><span class="p">(</span><span class="s1">'950.00'</span><span class="p">);</span>
+<h2 id='setmkrprice'>setMkrPrice</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">await</span> <span class="nx">price</span><span class="p">.</span><span class="nx">setMkrPrice</span><span class="p">(</span><span class="mf">950.00</span><span class="p">);</span>
 </code></pre>
 <p>Set the current USD price of the governance token MKR. </p>
 
