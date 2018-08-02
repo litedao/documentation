@@ -470,7 +470,7 @@
 <h3 id='umd'>UMD</h3><pre class="highlight html tab-html"><code><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"./maker-exchange-integration.js"</span> <span class="nt">/&gt;</span>
 
 <span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
-<span class="kd">var</span> <span class="nx">maker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Maker</span><span class="p">(</span><span class="s1">'kovan'</span><span class="p">,</span> <span class="p">{</span> <span class="na">privateKey</span><span class="p">:</span> <span class="nx">YOUR_PRIVATE_KEY</span> <span class="p">});</span>
+<span class="kd">var</span> <span class="nx">maker</span> <span class="o">=</span> <span class="nx">Maker</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">'kovan'</span><span class="p">,</span> <span class="p">{</span> <span class="na">privateKey</span><span class="p">:</span> <span class="nx">YOUR_PRIVATE_KEY</span> <span class="p">});</span>
 
 <span class="nx">maker</span><span class="p">.</span><span class="nx">openCdp</span><span class="p">()</span>
   <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">cdp</span> <span class="o">=&gt;</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getInfo</span><span class="p">())</span>
@@ -480,7 +480,7 @@
 <p>This library is also accessible as a <a href="https://github.com/umdjs/umd">UMD module</a>.</p>
 <h2 id='quick-example'>Quick Example</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">import</span> <span class="nx">Maker</span> <span class="nx">from</span> <span class="s1">'@makerdao/makerdao-exchange-integration'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">maker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Maker</span><span class="p">(</span><span class="s2">"kovan"</span><span class="p">,</span> <span class="p">{</span> <span class="na">privateKey</span><span class="p">:</span> <span class="nx">YOUR_PRIVATE_KEY</span> <span class="p">});</span>
+<span class="kr">const</span> <span class="nx">maker</span> <span class="o">=</span> <span class="nx">Maker</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s2">"kovan"</span><span class="p">,</span> <span class="p">{</span> <span class="na">privateKey</span><span class="p">:</span> <span class="nx">YOUR_PRIVATE_KEY</span> <span class="p">});</span>
 
 <span class="nx">async</span> <span class="kd">function</span> <span class="nx">openLockDraw</span><span class="p">()</span> <span class="p">{</span>
   <span class="nx">cdp</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">openCdp</span><span class="p">();</span>
@@ -497,19 +497,19 @@
 <p>Using the <a href="#maker">Maker</a> and <a href="#cdp">Cdp</a> APIs, the code shown on the right
 opens a cdp, locks 0.25 ETH into it, draws out 50 Dai, and then logs information
 about the newly opened position to the console.</p>
-<h1 id='maker'>Maker</h1><h2 id='presets'>Presets</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">makerHttp</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Maker</span><span class="p">(</span><span class="s1">'http'</span><span class="p">,</span> <span class="p">{</span>
+<h1 id='maker'>Maker</h1><h2 id='presets'>Presets</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">makerHttp</span> <span class="o">=</span> <span class="nx">Maker</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">'http'</span><span class="p">,</span> <span class="p">{</span>
   <span class="na">privateKey</span><span class="p">:</span> <span class="nx">YOUR_PRIVATE_KEY</span><span class="p">,</span>
   <span class="na">url</span><span class="p">:</span> <span class="s1">'https://sai-service.makerdao.com/node'</span>
 <span class="p">});</span>
 
-<span class="kr">const</span> <span class="nx">makerKovan</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Maker</span><span class="p">(</span><span class="s1">'kovan'</span><span class="p">,</span> <span class="p">{</span>
+<span class="kr">const</span> <span class="nx">makerKovan</span> <span class="o">=</span> <span class="nx">Maker</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">'kovan'</span><span class="p">,</span> <span class="p">{</span>
   <span class="na">privateKey</span><span class="p">:</span> <span class="nx">YOUR_PRIVATE_KEY</span><span class="p">,</span>
   <span class="na">provider</span><span class="p">:</span> <span class="p">{</span>
     <span class="na">infuraApiKey</span><span class="p">:</span> <span class="nx">YOUR_INFURA_API_KEY</span>
   <span class="p">}</span>
 <span class="p">});</span>
 
-<span class="kr">const</span> <span class="nx">makerTest</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Maker</span><span class="p">(</span><span class="s1">'test'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">makerTest</span> <span class="o">=</span> <span class="nx">Maker</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">'test'</span><span class="p">);</span>
 </code></pre>
 <p>When instantiating a <code>Maker</code> object, you pass in the name of a configuration preset
 and an options hash.</p>
@@ -535,7 +535,7 @@ right.</p>
 sign transactions using testnet-managed keys.</li>
 </ul></li>
 </ul>
-<h2 id='options'>Options</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">maker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Maker</span><span class="p">(</span><span class="s1">'http'</span><span class="p">,</span> <span class="p">{</span>
+<h2 id='options'>Options</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">maker</span> <span class="o">=</span> <span class="nx">Maker</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">'http'</span><span class="p">,</span> <span class="p">{</span>
   <span class="na">privateKey</span><span class="p">:</span> <span class="nx">YOUR_PRIVATE_KEY</span><span class="p">,</span> <span class="c1">// '0xabc...'</span>
   <span class="na">url</span><span class="p">:</span> <span class="s1">'https://sai-service.makerdao.com/node'</span><span class="p">,</span>
   <span class="na">provider</span><span class="p">:</span> <span class="p">{</span>
@@ -1046,7 +1046,7 @@ promise which resolves when the transaction is mined.</p>
 callbacks when the transaction is pending, or after a certain number of new
 blocks have been added after the block containing the transaction (when the
 transaction is &quot;finalized&quot;).</p>
-<h1 id='advanced-configuration'>Advanced Configuration</h1><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">customMaker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Maker</span><span class="p">(</span><span class="s1">'http'</span><span class="p">,</span> <span class="p">{</span>
+<h1 id='advanced-configuration'>Advanced Configuration</h1><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">customMaker</span> <span class="o">=</span> <span class="nx">Maker</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">'http'</span><span class="p">,</span> <span class="p">{</span>
   <span class="na">log</span><span class="p">:</span> <span class="s1">'BunyanLogger'</span><span class="p">,</span>
   <span class="na">exchange</span><span class="p">:</span> <span class="s1">'ZeroExExchangeService'</span><span class="p">,</span>
   <span class="na">web3</span><span class="p">:</span> <span class="p">[</span>
