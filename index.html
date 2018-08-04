@@ -402,9 +402,6 @@
               </ul>
           </li>
           <li>
-            <a href="#advanced-configuration" class="toc-h1 toc-link" data-title="advanced-configuration">Advanced Configuration</a>
-          </li>
-          <li>
             <a href="#developing" class="toc-h1 toc-link" data-title="developing">Developing</a>
               <ul class="toc-list-h2">
                   <li>
@@ -1046,21 +1043,6 @@ promise which resolves when the transaction is mined.</p>
 callbacks when the transaction is pending, or after a certain number of new
 blocks have been added after the block containing the transaction (when the
 transaction is &quot;finalized&quot;).</p>
-<h1 id='advanced-configuration'>Advanced Configuration</h1><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">customMaker</span> <span class="o">=</span> <span class="nx">Maker</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">'http'</span><span class="p">,</span> <span class="p">{</span>
-  <span class="na">log</span><span class="p">:</span> <span class="s1">'BunyanLogger'</span><span class="p">,</span>
-  <span class="na">exchange</span><span class="p">:</span> <span class="s1">'ZeroExExchangeService'</span><span class="p">,</span>
-  <span class="na">web3</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s1">'MyCustomWeb3Service'</span><span class="p">,</span>
-    <span class="p">{</span>
-      <span class="na">speed</span><span class="p">:</span> <span class="s1">'maximum plaid'</span>
-    <span class="p">}</span>
-  <span class="p">],</span>
-<span class="p">});</span>
-</code></pre>
-<p>You can take advantage of the pluggable architecture of this library by choosing
-different implementations for services. An example configuration is shown at
-right. (The ability to add your own custom implementations is still in
-development.)</p>
 <h1 id='developing'>Developing</h1>
 <ol>
 <li><code>git clone https://github.com/makerdao/makerdao-integration-poc</code></li>
@@ -1092,15 +1074,15 @@ suite, use <code>npm run test:net</code>.</p>
 <li><code>npm run test:net</code> - launch a Ganache test chain and deploy MakerDAO&#39;s contracts on it</li>
 </ul>
 <h1 id='adding-a-new-service'>Adding a New Service</h1>
-<p>A service is a Javascript class that contains public methods.  It can depend on other services through a built-in dependency injection framework, and can also be configured through the Maker config file / config options.</p>
+<p>You can take advantage of the pluggable architecture of this library by choosing different implementations for services, and/or adding new service roles altogether.  A service is just a Javascript class that inherits from either <code>PublicService, PrivateService, or LocalService</code>, and contains public method(s).  It can depend on other services through a built-in dependency injection framework, and can also be configured through the Maker config file / config options.</p>
 <h2 id='steps-to-add-a-new-service'>Steps to add a new service</h2>
 <p>Here are the steps to add a new service called <code>ExampleService</code> to MakerJS:</p>
 
-<ol>
-<li>In the <code>src</code> directory, create an <code>ExampleService.js</code> file in one of the subdirectories.  Also create a corresponding <code>ExampleService.spec.js</code> file in the <code>test</code> directory</li>
-<li>In <code>src/config/DefaultServiceProvider.js</code>, import <code>ExampleService.js</code> and add it to the <code>_services</code> array</li>
-<li>Create a class called <code>ExampleService</code> in <code>ExampleService.js</code></li>
-</ol>
+<ul>
+<li><p>(1) In the <code>src</code> directory, create an <code>ExampleService.js</code> file in one of the subdirectories.</p></li>
+<li><p>(2) In <code>src/config/DefaultServiceProvider.js</code>, import <code>ExampleService.js</code> and add it to the <code>_services</code> array</p></li>
+<li><p>(3) Create a class called <code>ExampleService</code> in <code>ExampleService.js</code></p></li>
+</ul>
 <pre class="highlight javascript tab-javascript"><code><span class="c1">//example code in ExampleService.js for steps 3-6</span>
 <span class="kr">import</span> <span class="nx">PublicService</span> <span class="nx">from</span> <span class="s1">'../core/PublicService'</span><span class="p">;</span>
 
@@ -1113,8 +1095,8 @@ suite, use <code>npm run test:net</code>.</p>
         <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'log'</span><span class="p">).</span><span class="nx">info</span><span class="p">(</span><span class="s1">'test'</span><span class="p">);</span>
     <span class="p">}</span>
 </code></pre>
-<ol>
-<li><p>The service must <code>extend</code> one of: </p>
+<ul>
+<li><p>(4) The service must <code>extend</code> one of: </p>
 
 <ul>
 <li><code>PrivateService</code> - requires both a network connection and authentication</li>
@@ -1123,44 +1105,50 @@ suite, use <code>npm run test:net</code>.</p>
 </ul>
 
 <p>See the <code>Service Lifecycle</code> section below for more info</p></li>
-<li><p>In the constructor, call the parent class&#39;s constructor with the following arguments:</p>
+<li><p>(5) In the constructor, call the parent class&#39;s constructor with the following arguments:</p>
 
-<ol>
+<ul>
 <li>The name of the service.  This is how the service can be referenced by other services</li>
 <li>An array of the names of services to depend on</li>
-</ol></li>
-<li><p>Add the necessary public methods</p></li>
-</ol>
-<pre class="highlight javascript tab-javascript"><code><span class="c1">//example code in ExampleService.spec.js for step 7</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">buildTestService</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'../helpers/serviceBuilders'</span><span class="p">;</span>
+</ul></li>
+<li><p>(6) Add the necessary public methods</p></li>
+</ul>
+<pre class="highlight javascript tab-javascript"><code><span class="c1">//example code in ExampleService.spec.js for step 8</span>
+<span class="kr">import</span> <span class="nx">Maker</span> <span class="nx">from</span> <span class="s1">'../../src/index'</span><span class="p">;</span>
 
-<span class="c1">//option 1: using buildTestService()</span>
-<span class="nx">test</span><span class="p">(</span><span class="s1">'test the example service'</span><span class="p">,</span> <span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kr">const</span> <span class="nx">exampleService</span> <span class="o">=</span> <span class="nx">buildTestService</span><span class="p">(</span><span class="s1">'example'</span><span class="p">,</span> <span class="p">{</span><span class="na">example</span><span class="p">:</span> <span class="s2">"ExampleService"</span> <span class="p">});</span>
-  <span class="nx">testService</span><span class="p">.</span><span class="nx">test</span><span class="p">();</span> <span class="c1">//logs "test"</span>
-<span class="p">});</span>
-
-<span class="c1">//option 2: using the Maker object</span>
-<span class="nx">test</span><span class="p">(</span><span class="s1">'test the example service'</span><span class="p">,</span> <span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="kr">const</span> <span class="nx">customMaker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Maker</span><span class="p">(</span><span class="s1">'http'</span><span class="p">,</span> <span class="p">{</span><span class="na">example</span><span class="p">:</span> <span class="s2">"ExampleService"</span><span class="p">});</span>
+<span class="c1">//step 8: a new service role ('example') is used</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'test 1'</span><span class="p">,</span> <span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="nx">maker</span> <span class="o">=</span> <span class="nx">Maker</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">'http'</span><span class="p">,</span> <span class="p">{</span><span class="na">example</span><span class="p">:</span> <span class="s2">"ExampleService"</span><span class="p">});</span>
   <span class="kr">const</span> <span class="nx">exampleService</span> <span class="o">=</span> <span class="nx">customMaker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'example'</span><span class="p">);</span>
-  <span class="nx">exampleService</span><span class="p">.</span><span class="nx">test</span><span class="p">();</span> <span class="c1">//console.logs "test"</span>
+  <span class="nx">exampleService</span><span class="p">.</span><span class="nx">test</span><span class="p">();</span> <span class="c1">//logs "test"</span>
+<span class="p">});</span>
+
+<span class="c1">//step 8: a custom service replaces a default service (Web3)</span>
+<span class="nx">test</span><span class="p">(</span><span class="s1">'test 2'</span><span class="p">,</span> <span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="nx">maker</span> <span class="o">=</span> <span class="nx">Maker</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">'http'</span><span class="p">,</span> <span class="p">{</span><span class="na">web3</span><span class="p">:</span> <span class="s2">"MyCustomWeb3Service"</span><span class="p">});</span>
+  <span class="kr">const</span> <span class="nx">mycustomWeb3Service</span> <span class="o">=</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'web3'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre>
-<ol>
-<li>Write a test in the test file.  You can either build a Maker object that uses your service, or use the <code>buildTestService</code> method found in <code>test/helpers/serviceBuilders</code> to only build the <code>ExampleSerivce</code></li>
-<li>(Optional) Implement the relevant service lifecycle functions (<code>initialize()</code>, <code>connect()</code>, and <code>authenticate()</code>).  See the <code>Service Lifecycle</code> section below for more info</li>
-</ol>
-<pre class="highlight javascript tab-javascript"><code><span class="c1">//example configuration for step 8</span>
-<span class="kr">const</span> <span class="nx">maker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Maker</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="p">{</span>
-    <span class="na">example</span><span class="p">:</span> <span class="p">{</span>
-    <span class="na">exampleSetting</span><span class="p">:</span> <span class="kc">true</span>
-    <span class="p">}</span>
-<span class="p">});</span>
+<ul>
+<li><p>(7) If you&#39;re service will be used to replace a default service (the full list of default service roles can be found in <code>src/config/ConfigFactory</code>), then skip this step.  Otherwise, you&#39;ll need to add your new service role (e.g. <code>&quot;example&quot;</code>) to the <code>ServiceRoles</code> array in <code>src/config/ConfigFactory</code>.</p></li>
+<li><p>(8) Create a corresponding <code>ExampleService.spec.js</code> file in the <code>test</code> directory.  Write a test in the test file that creates a Maker object using your service.</p></li>
+<li><p>(9) (Optional) Implement the relevant service lifecycle functions (<code>initialize()</code>, <code>connect()</code>, and <code>authenticate()</code>).  See the <code>Service Lifecycle</code> section below for more info</p></li>
+</ul>
+<pre class="highlight javascript tab-javascript"><code><span class="c1">//step 10: in ExampleService.spec.js</span>
+<span class="kr">const</span> <span class="nx">maker</span> <span class="o">=</span> <span class="nx">Maker</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">'http'</span><span class="p">,</span> <span class="p">{</span><span class="na">example</span><span class="p">:</span> <span class="p">[</span><span class="s2">"ExampleService"</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">exampleSetting</span><span class="p">:</span> <span class="s2">"this is a configuration setting"</span>
+  <span class="p">}]});</span>
+
+<span class="c1">//step 10: accessing configuration settings in ExampleService.js</span>
+<span class="nx">initialize</span><span class="p">(</span><span class="nx">settings</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">settings</span><span class="p">.</span><span class="nx">exampleSetting</span><span class="p">){</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'log'</span><span class="p">).</span><span class="nx">info</span><span class="p">(</span><span class="nx">settings</span><span class="p">.</span><span class="nx">exampleSetting</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </code></pre>
-<ol>
-<li>(Optional) Allow for configuration.  Service-specific settings can be passed into a service by the Maker config file or config options.  These service-specific settings can then be accessed from inside a service as the parameter passed into the <code>initialize</code> function (see the <code>Service Lifecycle</code> section below)</li>
-</ol>
+<ul>
+<li>(10) (Optional) Allow for configuration.  Service-specific settings can be passed into a service by the Maker config file or config options.  These service-specific settings can then be accessed from inside a service as the parameter passed into the <code>initialize</code> function (see the <code>Service Lifecycle</code> section below)</li>
+</ul>
 <h2 id='service-lifecycle'>Service Lifecycle</h2>
 <p>The three kinds of services mentioned in step 4 above follow the following state machine diagrams in the picture below.</p>
 <pre class="highlight javascript tab-javascript"><code><span class="c1">//example initialize() function in ExampleService.js</span>
@@ -1172,7 +1160,8 @@ suite, use <code>npm run test:net</code>.</p>
 <p>To specify what initializing, connecting and authenticating entails, implement the <code>initialize()</code>, <code>connect()</code>, and <code>authenticate()</code> functions in the service itself.  This will be called while the service&#39;s manager brings the service to the corresponding state.</p>
 
 <p><img src="images/statemachine.png" alt="alt text" /></p>
-<pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">exampleService</span> <span class="o">=</span> <span class="nx">buildTestService</span><span class="p">(</span><span class="s1">'example'</span><span class="p">,</span> <span class="p">{</span><span class="na">example</span><span class="p">:</span> <span class="s2">"ExampleService"</span> <span class="p">});</span>
+<pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">maker</span> <span class="o">=</span> <span class="nx">Maker</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">'http'</span><span class="p">,</span> <span class="p">{</span><span class="na">example</span><span class="p">:</span> <span class="s2">"ExampleService"</span><span class="p">});</span>
+<span class="kr">const</span> <span class="nx">exampleService</span> <span class="o">=</span> <span class="nx">customMaker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'example'</span><span class="p">);</span>
 
 <span class="c1">//wait for example service and its dependencies to initialize</span>
 <span class="nx">await</span> <span class="nx">exampleService</span><span class="p">.</span><span class="nx">manager</span><span class="p">().</span><span class="nx">initialize</span><span class="p">();</span>
@@ -1187,8 +1176,6 @@ suite, use <code>npm run test:net</code>.</p>
 <span class="nx">exampleService</span><span class="p">.</span><span class="nx">manager</span><span class="p">().</span><span class="nx">onConnected</span><span class="p">(()</span><span class="o">=&gt;</span><span class="p">{</span>
     <span class="cm">/*executed after connected*/</span>
 <span class="p">});</span>
-
-<span class="kr">const</span> <span class="nx">maker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Maker</span><span class="p">(</span><span class="s1">'http'</span><span class="p">,</span> <span class="p">{</span><span class="na">example</span><span class="p">:</span> <span class="s2">"ExampleService"</span><span class="p">});</span>
 
 <span class="c1">//wait for all services used by the maker object to authenticate</span>
 <span class="nx">maker</span><span class="p">.</span><span class="nx">authenticate</span><span class="p">();</span>
@@ -1208,7 +1195,7 @@ suite, use <code>npm run test:net</code>.</p>
   <span class="na">provider</span><span class="p">:</span> <span class="p">{</span> <span class="p">...</span><span class="nx">settings</span><span class="p">.</span><span class="nx">provider</span> <span class="p">}</span>
 <span class="p">});</span>
 </code></pre>
-<p>Another way to an add an event is to manually emit an event using ther event service&#39;s <code>emit</code> function.  For example, when the Web3Service initializes, it emits an event that contains info about the provider.</p>
+<p>Another way to an add an event is to manually emit an event using the event service&#39;s <code>emit</code> function.  For example, when the Web3Service initializes, it emits an event that contains info about the provider.</p>
 <pre class="highlight javascript tab-javascript"><code><span class="c1">//in the constructor in the Cdp.js</span>
 <span class="k">this</span><span class="p">.</span><span class="nx">_emitterInstance</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_cdpService</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'event'</span><span class="p">).</span><span class="nx">buildEmitter</span><span class="p">();</span>
 <span class="k">this</span><span class="p">.</span><span class="nx">on</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_emitterInstance</span><span class="p">.</span><span class="nx">on</span><span class="p">;</span>
