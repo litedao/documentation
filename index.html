@@ -455,16 +455,16 @@
 <li>Token contract functionality for WETH, PETH, MKR, Dai, and ETH</li>
 <li>Buying and selling MKR and Dai with built-in DEX integration</li>
 </ul>
-<h1 id='getting-started'>Getting Started</h1><h2 id='installation'>Installation</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">import</span> <span class="nx">Maker</span> <span class="nx">from</span> <span class="s1">'@makerdao/makerdao-exchange-integration'</span><span class="p">;</span>
+<h1 id='getting-started'>Getting Started</h1><h2 id='installation'>Installation</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">import</span> <span class="nx">Maker</span> <span class="nx">from</span> <span class="s1">'@makerdao/dai'</span><span class="p">;</span>
 <span class="c1">// or:</span>
-<span class="kr">const</span> <span class="nx">Maker</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'@makerdao/makerdao-exchange-integration'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">Maker</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'@makerdao/dai'</span><span class="p">);</span>
 </code></pre>
 <p>Install the package with npm:</p>
 
-<p><code>npm install @makerdao/makerdao-exchange-integration</code></p>
+<p><code>npm install @makerdao/dai</code></p>
 
 <p>Once it&#39;s installed, import the module into your project as shown on the right.</p>
-<h3 id='umd'>UMD</h3><pre class="highlight html tab-html"><code><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"./maker-exchange-integration.js"</span> <span class="nt">/&gt;</span>
+<h3 id='umd'>UMD</h3><pre class="highlight html tab-html"><code><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"./dai.js"</span> <span class="nt">/&gt;</span>
 
 <span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
 <span class="kd">var</span> <span class="nx">maker</span> <span class="o">=</span> <span class="nx">Maker</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">'kovan'</span><span class="p">,</span> <span class="p">{</span> <span class="na">privateKey</span><span class="p">:</span> <span class="nx">YOUR_PRIVATE_KEY</span> <span class="p">});</span>
@@ -475,7 +475,7 @@
 <span class="nt">&lt;/script&gt;</span>
 </code></pre>
 <p>This library is also accessible as a <a href="https://github.com/umdjs/umd">UMD module</a>.</p>
-<h2 id='quick-example'>Quick Example</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">import</span> <span class="nx">Maker</span> <span class="nx">from</span> <span class="s1">'@makerdao/makerdao-exchange-integration'</span><span class="p">;</span>
+<h2 id='quick-example'>Quick Example</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">import</span> <span class="nx">Maker</span> <span class="nx">from</span> <span class="s1">'@makerdao/dai'</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">maker</span> <span class="o">=</span> <span class="nx">Maker</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s2">"kovan"</span><span class="p">,</span> <span class="p">{</span> <span class="na">privateKey</span><span class="p">:</span> <span class="nx">YOUR_PRIVATE_KEY</span> <span class="p">});</span>
 
@@ -621,7 +621,7 @@ sign transactions using testnet-managed keys.</li>
 </ul>
 
 <p><code>maker.getCdp(id)</code> creates a CDP object for an existing CDP. The CDP object can then be used to interact with your CDP.</p>
-<h2 id='units'>Units</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">import</span> <span class="nx">Maker</span> <span class="nx">from</span> <span class="s1">'@makerdao/makerdao-exchange-integration'</span><span class="p">;</span>
+<h2 id='units'>Units</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">import</span> <span class="nx">Maker</span> <span class="nx">from</span> <span class="s1">'@makerdao/dai'</span><span class="p">;</span>
 <span class="kr">const</span> <span class="p">{</span> <span class="nx">MKR</span><span class="p">,</span> <span class="nx">DAI</span><span class="p">,</span> <span class="nx">ETH</span><span class="p">,</span> <span class="nx">WETH</span><span class="p">,</span> <span class="nx">PETH</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">Maker</span><span class="p">;</span>
 
 <span class="c1">// These are all identical:</span>
@@ -1074,7 +1074,7 @@ suite, use <code>npm run test:net</code>.</p>
 <li><code>npm run test:net</code> - launch a Ganache test chain and deploy MakerDAO&#39;s contracts on it</li>
 </ul>
 <h1 id='adding-a-new-service'>Adding a New Service</h1>
-<p>You can take advantage of the pluggable architecture of this library by choosing different implementations for services, and/or adding new service roles altogether.  A service is just a Javascript class that inherits from either <code>PublicService, PrivateService, or LocalService</code>, and contains public method(s).  It can depend on other services through a built-in dependency injection framework, and can also be configured through the Maker config file / config options.</p>
+<p>You can take advantage of the pluggable architecture of this library by choosing different implementations for services, and/or adding new service roles altogether.  A service is just a Javascript class that inherits from either <code>PublicService</code>, <code>PrivateService</code>, or <code>LocalService</code>, and contains public method(s).  It can depend on other services through a built-in dependency injection framework, and can also be configured through the Maker config file / config options.</p>
 <h2 id='steps-to-add-a-new-service'>Steps to add a new service</h2>
 <p>Here are the steps to add a new service called <code>ExampleService</code> to MakerJS:</p>
 
@@ -1096,7 +1096,7 @@ suite, use <code>npm run test:net</code>.</p>
     <span class="p">}</span>
 </code></pre>
 <ul>
-<li><p>(4) The service must <code>extend</code> one of: </p>
+<li><p>(4) The service must <code>extend</code> one of:</p>
 
 <ul>
 <li><code>PrivateService</code> - requires both a network connection and authentication</li>
@@ -1130,7 +1130,7 @@ suite, use <code>npm run test:net</code>.</p>
 <span class="p">});</span>
 </code></pre>
 <ul>
-<li><p>(7) If you&#39;re service will be used to replace a default service (the full list of default service roles can be found in <code>src/config/ConfigFactory</code>), then skip this step.  Otherwise, you&#39;ll need to add your new service role (e.g. <code>&quot;example&quot;</code>) to the <code>ServiceRoles</code> array in <code>src/config/ConfigFactory</code>.</p></li>
+<li><p>(7) If your service will be used to replace a default service (the full list of default service roles can be found in <code>src/config/ConfigFactory</code>),  then skip this step.  Otherwise, you&#39;ll need to add your new service role (e.g. <code>&quot;example&quot;</code>) to the <code>ServiceRoles</code> array in <code>src/config/ConfigFactory</code>.</p></li>
 <li><p>(8) Create a corresponding <code>ExampleService.spec.js</code> file in the <code>test</code> directory.  Write a test in the test file that creates a Maker object using your service.</p></li>
 <li><p>(9) (Optional) Implement the relevant service lifecycle functions (<code>initialize()</code>, <code>connect()</code>, and <code>authenticate()</code>).  See the <code>Service Lifecycle</code> section below for more info</p></li>
 </ul>
@@ -1188,7 +1188,7 @@ suite, use <code>npm run test:net</code>.</p>
       <span class="p">}</span>
     <span class="p">});</span>
 </code></pre>
-<p>One way to add an event is to “register” a function that gets called on each new block, using the event service&#39;s <code>registerPollEvents()</code> function.  For example, here is some code from the price service. 
+<p>One way to add an event is to “register” a function that gets called on each new block, using the event service&#39;s <code>registerPollEvents()</code> function.  For example, here is some code from the price service.
 <code>this.getEthPrice()</code> will be called on each new block, and if the state has changed from the last call, a <code>price/ETH_USD</code> event will be emitted with the payload { price: [new_price] }.</p>
 <pre class="highlight javascript tab-javascript"><code><span class="c1">//in Web3Service.js</span>
 <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'event'</span><span class="p">).</span><span class="nx">emit</span><span class="p">(</span><span class="s1">'web3/INITIALIZED'</span><span class="p">,</span> <span class="p">{</span>
