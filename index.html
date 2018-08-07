@@ -1074,6 +1074,8 @@ suite, use <code>npm run test:net</code>.</p>
 <li><code>npm run test:net</code> - launch a Ganache test chain and deploy MakerDAO&#39;s contracts on it</li>
 </ul>
 <h1 id='adding-a-new-service'>Adding a New Service</h1>
+<p><em>Note: This section is only for advanced users that are willing to modify the dai.js source code.  In the future, you will be able to add custom services without needing to modify the source code.</em></p>
+
 <p>You can take advantage of the pluggable architecture of this library by choosing different implementations for services, and/or adding new service roles altogether.  A service is just a Javascript class that inherits from either <code>PublicService</code>, <code>PrivateService</code>, or <code>LocalService</code>, and contains public method(s).  It can depend on other services through a built-in dependency injection framework, and can also be configured through the Maker config file / config options.</p>
 <h2 id='steps-to-add-a-new-service'>Steps to add a new service</h2>
 <p>Here are the steps to add a new service called <code>ExampleService</code> to MakerJS:</p>
