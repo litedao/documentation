@@ -440,6 +440,8 @@
 <li>Token contract functionality for WETH, PETH, MKR, Dai, and ETH</li>
 <li>Buying and selling MKR and Dai with built-in DEX integration</li>
 </ul>
+
+<p>For example code that consumes the library, check out <a href="https://github.com/makerdao/integration-examples">this repository</a>.</p>
 <h1 id='getting-started'>Getting Started</h1><h2 id='installation'>Installation</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">import</span> <span class="nx">Maker</span> <span class="nx">from</span> <span class="s1">'@makerdao/dai'</span><span class="p">;</span>
 <span class="c1">// or:</span>
 <span class="kr">const</span> <span class="nx">Maker</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'@makerdao/dai'</span><span class="p">);</span>
@@ -515,6 +517,11 @@ right.</p>
 <ul>
 <li>Use a local testnet (e.g. Ganache) running at <code>http://127.0.0.1:2000</code>, and
 sign transactions using testnet-managed keys.</li>
+</ul></li>
+<li><code>&#39;mainnet&#39;</code>
+
+<ul>
+<li>Use the main Ethereum network via Infura.</li>
 </ul></li>
 </ul>
 <h2 id='options'>Options</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">maker</span> <span class="o">=</span> <span class="nx">Maker</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">'http'</span><span class="p">,</span> <span class="p">{</span>
