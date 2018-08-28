@@ -486,7 +486,9 @@
 <p>Using the <a href="#maker">Maker</a> and <a href="#cdp">Cdp</a> APIs, the code shown on the right
 opens a cdp, locks 0.25 ETH into it, draws out 50 Dai, and then logs information
 about the newly opened position to the console.</p>
-<h1 id='maker'>Maker</h1><h2 id='presets'>Presets</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">makerHttp</span> <span class="o">=</span> <span class="nx">Maker</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">'http'</span><span class="p">,</span> <span class="p">{</span>
+<h1 id='maker'>Maker</h1><h2 id='presets'>Presets</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">makerBrowser</span> <span class="o">=</span> <span class="nx">Maker</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">'browser'</span><span class="p">);</span>
+
+<span class="kr">const</span> <span class="nx">makerHttp</span> <span class="o">=</span> <span class="nx">Maker</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">'http'</span><span class="p">,</span> <span class="p">{</span>
   <span class="na">privateKey</span><span class="p">:</span> <span class="nx">YOUR_PRIVATE_KEY</span><span class="p">,</span>
   <span class="na">url</span><span class="p">:</span> <span class="s1">'https://sai-service.makerdao.com/node'</span>
 <span class="p">});</span>
@@ -507,6 +509,11 @@ and an options hash.</p>
 right.</p>
 
 <ul>
+<li><code>&#39;browser&#39;</code>
+
+<ul>
+<li>Use the provider from the browser (e.g. MetaMask).</li>
+</ul></li>
 <li><code>&#39;http&#39;</code>
 
 <ul>
@@ -573,18 +580,6 @@ sign transactions using testnet-managed keys.</li>
 <ul>
 <li>Number in milliseconds that represents how often the blockchain connection and account authentication is checked. This allows the library to move out of an authenticated or connected state when it discovers it no longer has access to unlocked accounts, or can no longer connect to a node.</li>
 <li>Default value: 5000 (5 seconds)</li>
-</ul></li>
-<li><code>web3.usePresetProvider</code>
-
-<ul>
-<li>If <code>true</code>, the value <code>window.web3</code> (if there is one) will be used as the Provider, instead of creating a new one. For example, this should be true if the library is used in a browser and it should use MetaMask.</li>
-<li>Default value: <code>false</code></li>
-</ul></li>
-<li><code>overrideMetamask</code>
-
-<ul>
-<li>Same as above, but with simpler terminology.</li>
-<li>Default value: <code>true</code></li>
 </ul></li>
 <li><code>log</code>
 
