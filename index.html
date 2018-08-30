@@ -390,6 +390,20 @@
               </ul>
           </li>
           <li>
+            <a href="#using-multiple-accounts" class="toc-h1 toc-link" data-title="using-multiple-accounts">Using Multiple Accounts</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#account-types" class="toc-h2 toc-link" data-title="account-types">Account types</a>
+                  </li>
+                  <li>
+                    <a href="#plugins" class="toc-h2 toc-link" data-title="plugins">Plugins</a>
+                  </li>
+                  <li>
+                    <a href="#demo" class="toc-h2 toc-link" data-title="demo">Demo</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
             <a href="#developing" class="toc-h1 toc-link" data-title="developing">Developing</a>
               <ul class="toc-list-h2">
                   <li>
@@ -1038,6 +1052,76 @@ promise which resolves when the transaction is mined.</p>
 callbacks when the transaction is pending, or after a certain number of new
 blocks have been added after the block containing the transaction (when the
 transaction is &quot;finalized&quot;).</p>
+<h1 id='using-multiple-accounts'>Using Multiple Accounts</h1><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">maker</span> <span class="o">=</span> <span class="nx">Maker</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span>
+  <span class="na">url</span><span class="p">:</span> <span class="s1">'http://localhost:2000'</span><span class="p">,</span>
+  <span class="na">accounts</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">other</span><span class="p">:</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="nx">privateKey</span><span class="p">,</span> <span class="na">key</span><span class="p">:</span> <span class="nx">someOtherKey</span><span class="p">},</span>
+    <span class="na">default</span><span class="p">:</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="nx">privateKey</span><span class="p">,</span> <span class="na">key</span><span class="p">:</span> <span class="nx">myKey</span><span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">await</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">authenticate</span><span class="p">();</span>
+<span class="nx">await</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">addAccount</span><span class="p">(</span><span class="s1">'yetAnother'</span><span class="p">,</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="nx">privateKey</span><span class="p">,</span> <span class="na">key</span><span class="p">:</span> <span class="nx">thirdKey</span><span class="p">});</span>
+
+<span class="kr">const</span> <span class="nx">cdp1</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">openCdp</span><span class="p">();</span> <span class="c1">// owned by "default"</span>
+
+<span class="nx">maker</span><span class="p">.</span><span class="nx">useAccount</span><span class="p">(</span><span class="s1">'other'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">cdp2</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">openCdp</span><span class="p">();</span> <span class="c1">// owned by "other"</span>
+
+<span class="nx">maker</span><span class="p">.</span><span class="nx">useAccount</span><span class="p">(</span><span class="s1">'yetAnother'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">cdp3</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">openCdp</span><span class="p">();</span> <span class="c1">// owned by "yetAnother"</span>
+</code></pre>
+<p>The library supports the use of multiple accounts (i.e. private keys) within a single Maker instance. Accounts can be specified in the constructor options or with the <code>addAccount</code> method.</p>
+
+<p>Call <code>useAccount</code> to switch to using an account by its name, and subsequent calls will use that account as the transaction signer.</p>
+
+<p>When the Maker instance is first created, it will use the account named <code>default</code> if it exists, or the first account in the list otherwise.</p>
+<h2 id='account-types'>Account types</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">maker</span> <span class="o">=</span> <span class="nx">Maker</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span>
+  <span class="na">url</span><span class="p">:</span> <span class="s1">'http://localhost:2000'</span><span class="p">,</span>
+  <span class="na">accounts</span><span class="p">:</span> <span class="p">{</span>
+    <span class="c1">// this will be the first account from the provider at</span>
+    <span class="c1">// localhost:2000</span>
+    <span class="na">first</span><span class="p">:</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="s1">'provider'</span><span class="p">},</span>
+
+    <span class="c1">// this will be the current account in MetaMask, and it</span>
+    <span class="c1">// will send its transactions through MetaMask</span>
+    <span class="na">second</span><span class="p">:</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="s1">'browser'</span><span class="p">},</span>
+
+    <span class="c1">// this account will send its transactions through the</span>
+    <span class="c1">// provider at localhost:2000</span>
+    <span class="na">third</span><span class="p">:</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="s1">'privateKey'</span><span class="p">,</span> <span class="na">key</span><span class="p">:</span> <span class="nx">myPrivateKey</span><span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">})</span>
+</code></pre>
+<p>In addition to the <code>privateKey</code> account type, there are two other built-in types:</p>
+
+<ul>
+<li><code>provider</code>: Get the first account from the provider (e.g. the value from <code>getAccounts</code>).</li>
+<li><code>browser</code>: Get the first account from the provider in the browser (e.g. MetaMask), even if the Maker instance is configured to use a different provider.</li>
+</ul>
+<h2 id='plugins'>Plugins</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">import</span> <span class="nx">TrezorPlugin</span> <span class="nx">from</span> <span class="s1">'@makerdao/dai-plugin-trezor-web'</span><span class="p">;</span>
+<span class="kr">import</span> <span class="nx">LedgerPlugin</span> <span class="nx">from</span> <span class="s1">'@makerdao/dai-plugin-ledger-web'</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">maker</span> <span class="o">=</span> <span class="nx">Maker</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span>
+  <span class="na">plugins</span><span class="p">:</span> <span class="p">[</span>
+    <span class="nx">TrezorPlugin</span><span class="p">,</span>
+    <span class="nx">LedgerPlugin</span><span class="p">,</span>
+  <span class="p">],</span>
+  <span class="na">accounts</span><span class="p">:</span> <span class="p">{</span>
+    <span class="c1">// default derivation path is "44'/60'/0'/0/0"</span>
+    <span class="na">myTrezor</span><span class="p">:</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="s1">'trezor'</span><span class="p">,</span> <span class="na">path</span><span class="p">:</span> <span class="nx">derivationPath1</span><span class="p">},</span>
+    <span class="na">myLedger</span><span class="p">:</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="s1">'ledger'</span><span class="p">,</span> <span class="na">path</span><span class="p">:</span> <span class="nx">derivationPath2</span><span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</code></pre>
+<p>Plugins can add additional account types. There are currently two such plugins for hardware wallet support:</p>
+
+<ul>
+<li><a href="https://github.com/makerdao/dai-plugin-trezor-web">dai-plugin-trezor-web</a></li>
+<li><a href="https://github.com/makerdao/dai-plugin-ledger-web">dai-plugin-ledger-web</a></li>
+</ul>
+<h2 id='demo'>Demo</h2>
+<p>Install the <a href="https://github.com/makerdao/integration-examples/tree/master/accounts">multiple accounts demo app</a> to see this functionality in action.</p>
 <h1 id='developing'>Developing</h1>
 <ol>
 <li><code>git clone https://github.com/makerdao/makerdao-integration-poc</code></li>
