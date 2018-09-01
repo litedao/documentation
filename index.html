@@ -560,7 +560,9 @@ sign transactions using testnet-managed keys.</li>
   <span class="p">},</span>
   <span class="na">web3</span><span class="p">:</span> <span class="p">{</span>
     <span class="na">statusTimerDelay</span><span class="p">:</span> <span class="mi">2000</span><span class="p">,</span>
-    <span class="na">usePresetProvider</span><span class="p">:</span> <span class="kc">false</span>
+    <span class="na">transactionSettings</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">gasPrice</span><span class="p">:</span> <span class="mi">12000000000</span>
+    <span class="p">}</span>
   <span class="p">}</span>
   <span class="nl">log</span><span class="p">:</span> <span class="kc">false</span>
 <span class="p">});</span>
@@ -594,6 +596,12 @@ sign transactions using testnet-managed keys.</li>
 <ul>
 <li>Number in milliseconds that represents how often the blockchain connection and account authentication is checked. This allows the library to move out of an authenticated or connected state when it discovers it no longer has access to unlocked accounts, or can no longer connect to a node.</li>
 <li>Default value: 5000 (5 seconds)</li>
+</ul></li>
+<li><code>web3.transactionSettings</code>
+
+<ul>
+<li>Object containing transaction options to be applied to all transactions sent through the library.</li>
+<li>Default value: <code>{ gasLimit: 4000000 }</code></li>
 </ul></li>
 <li><code>log</code>
 
