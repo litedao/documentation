@@ -300,6 +300,9 @@
                   <li>
                     <a href="#shut" class="toc-h2 toc-link" data-title="strong-shut-strong"><strong>shut</strong></a>
                   </li>
+                  <li>
+                    <a href="#bite" class="toc-h2 toc-link" data-title="strong-bite-strong"><strong>bite</strong></a>
+                  </li>
               </ul>
           </li>
           <li>
@@ -348,6 +351,9 @@
                   <li>
                     <a href="#buydai" class="toc-h2 toc-link" data-title="buydai">buyDai</a>
                   </li>
+                  <li>
+                    <a href="#oasisorder" class="toc-h2 toc-link" data-title="oasisorder">OasisOrder</a>
+                  </li>
               </ul>
           </li>
           <li>
@@ -382,10 +388,13 @@
             <a href="#transactions" class="toc-h1 toc-link" data-title="transactions">Transactions</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#basic-usage" class="toc-h2 toc-link" data-title="basic-usage">Basic usage</a>
+                    <a href="#transactionobject-lifecycle-hooks" class="toc-h2 toc-link" data-title="transactionobject-lifecycle-hooks">TransactionObject Lifecycle Hooks</a>
                   </li>
                   <li>
-                    <a href="#advanced-usage" class="toc-h2 toc-link" data-title="advanced-usage">Advanced usage</a>
+                    <a href="#transactionobject-transaction-data" class="toc-h2 toc-link" data-title="transactionobject-transaction-data">TransactionObject Transaction Data</a>
+                  </li>
+                  <li>
+                    <a href="#onnewtransaction" class="toc-h2 toc-link" data-title="onnewtransaction">onNewTransaction</a>
                   </li>
               </ul>
           </li>
@@ -624,12 +633,12 @@ sign transactions using testnet-managed keys.</li>
 </code></pre>
 <ul>
 <li><strong>Params:</strong> none</li>
-<li><strong>Returns:</strong> promise (resolves to new CDP object)</li>
+<li><strong>Returns:</strong> promise (resolves to new CDP object once mined)</li>
 </ul>
 
 <p><code>maker.openCdp()</code> will create a new CDP, and then return the CDP object, which can be used to access other CDP functionality.</p>
 
-<p>By default, the promise will resolve when the transaction is mined.</p>
+<p>The promise will resolve when the transaction is mined.</p>
 <h2 id='getcdp'><strong>getCdp</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">cdp</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">getCdp</span><span class="p">(</span><span class="mi">614</span><span class="p">);</span>
 </code></pre>
 <ul>
@@ -772,7 +781,7 @@ the price of ETH in USD.</p>
 </code></pre>
 <ul>
 <li><strong>Params:</strong> amount to lock in the CDP, in units defined by the price service.</li>
-<li><strong>Returns:</strong> promise (resolves to <code>transactionHybrid</code>)</li>
+<li><strong>Returns:</strong> promise (resolves to <a href="#transactions"><code>transactionObject</code></a> once mined)</li>
 </ul>
 
 <p><code>cdp.lockEth(eth)</code> abstracts the token conversions needed to lock collateral in a CDP. It first converts the ETH to WETH, then converts the WETH to PETH, then locks the PETH in the CDP.</p>
@@ -782,7 +791,7 @@ the price of ETH in USD.</p>
 </code></pre>
 <ul>
 <li><strong>Params:</strong> amount to draw (in Dai, as string)</li>
-<li><strong>Returns:</strong> promise (resolves to <code>transactionHybrid</code>)</li>
+<li><strong>Returns:</strong> promise (resolves to <a href="#transactions"><code>transactionObject</code></a> once mined)</li>
 </ul>
 
 <p><code>cdp.drawDai(dai)</code> withdraws the specified amount of Dai as a loan against the collateral in the CDP. As such, it will fail if the CDP doesn&#39;t have enough PETH locked in it to remain at least 150% collateralized.</p>
@@ -792,7 +801,7 @@ the price of ETH in USD.</p>
 </code></pre>
 <ul>
 <li><strong>Params:</strong> amount to repay (in Dai, as string)</li>
-<li><strong>Returns:</strong> promise (resolves to <code>transactionHybrid</code>)</li>
+<li><strong>Returns:</strong> promise (resolves to <a href="#transactions"><code>transactionObject</code></a> once mined)</li>
 </ul>
 
 <p><code>cdp.wipeDai(dai)</code> sends Dai back to the CDP in order to repay some (or all) of its outstanding debt.</p>
@@ -804,7 +813,7 @@ the price of ETH in USD.</p>
 </code></pre>
 <ul>
 <li><strong>Params:</strong> amount of Peth collateral to free from the CDP, in units defined by the price service.</li>
-<li><strong>Returns:</strong> promise (resolves to <code>transactionHybrid</code>)</li>
+<li><strong>Returns:</strong> promise (resolves to <a href="#transactions"><code>transactionObject</code></a> once mined)</li>
 </ul>
 
 <p><code>cdp.freePeth(peth)</code> withdraws the specified amount of PETH and returns it to the owner&#39;s address. As such, the contract will only allow you to free PETH that&#39;s locked in excess of 150% of the CDP&#39;s outstanding debt.</p>
@@ -812,7 +821,7 @@ the price of ETH in USD.</p>
 </code></pre>
 <ul>
 <li><strong>Params:</strong> Ethereum address (string)</li>
-<li><strong>Returns:</strong> promise (resolves to <code>transactionHybrid</code>)</li>
+<li><strong>Returns:</strong> promise (resolves to <a href="#transactions"><code>transactionObject</code></a> once mined)</li>
 </ul>
 
 <p><code>cdp.give(address)</code> transfers ownership of the CDP from the current owner to the address you provide as an argument.</p>
@@ -820,10 +829,18 @@ the price of ETH in USD.</p>
 </code></pre>
 <ul>
 <li><strong>Params:</strong> none</li>
-<li><strong>Returns:</strong> promise (resolves to <code>transactionHybrid</code>)</li>
+<li><strong>Returns:</strong> promise (resolves to <a href="#transactions"><code>transactionObject</code></a> once mined)</li>
 </ul>
 
-<p><code>cdp.shut()</code> will close the CDP and return the collateral, in PETH, to its owner. It will fail if the CDP still has outstanding debt.</p>
+<p><code>cdp.shut()</code> wipes all remaining dai, frees all remaining collateral, and deletes the CDP. This will fail if the caller does not have enough DAI and MKR to wipe all debt.</p>
+<h2 id='bite'><strong>bite</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="k">return</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">bite</span><span class="p">();</span>
+</code></pre>
+<ul>
+<li><strong>Params:</strong> none</li>
+<li><strong>Returns:</strong> promise (resolves to <a href="#transactions"><code>transactionObject</code></a> once mined)</li>
+</ul>
+
+<p><code>cdp.bite()</code> will initiate the liquidation process of an undercollateralized CDP</p>
 <h1 id='price-service'>Price Service</h1><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">price</span> <span class="o">=</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'price'</span><span class="p">);</span>
 </code></pre>
 <p>Retrieve the PriceService through <code>Maker.service(&#39;price&#39;)</code>.</p>
@@ -887,27 +904,46 @@ reported by the oracles in the Maker system.</p>
 through <code>Maker.service(&#39;exchange&#39;)</code>.</p>
 
 <p>The exchange service allows to buy and sell DAI, MKR, and other tokens. The default 
-OasisExchangeService implementation uses the OasisDEX OTC market for this. </p>
+OasisExchangeService implementation uses the OasisDEX OTC market for this.</p>
 <h2 id='selldai'>sellDai</h2><pre class="highlight javascript tab-javascript"><code><span class="c1">// Sell 100.00 DAI for 0.30 WETH or more.</span>
-<span class="kr">const</span> <span class="nx">sellOrder</span> <span class="o">=</span> <span class="nx">exchange</span><span class="p">.</span><span class="nx">sellDai</span><span class="p">(</span><span class="s1">'100.0'</span><span class="p">,</span> <span class="s1">'WETH'</span><span class="p">,</span> <span class="s1">'0.30'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">sellOrder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">exchange</span><span class="p">.</span><span class="nx">sellDai</span><span class="p">(</span><span class="s1">'100.0'</span><span class="p">,</span> <span class="s1">'WETH'</span><span class="p">,</span> <span class="s1">'0.30'</span><span class="p">);</span>
 </code></pre>
 <p>Sell a set amount of DAI and receive another token in return.</p>
-<h3 id='parameters'>Parameters</h3>
+
+<ul>
+<li><strong>Parameters</strong>
+
 <ul>
 <li><code>daiAmount</code> - Amount of DAI to sell.</li>
 <li><code>tokenSymbol</code> - Token to receive in return.</li>
 <li><code>minFillAmount</code> - Minimum amount to receive in return.</li>
+</ul></li>
+<li><strong>Returns:</strong> promise (resolves to OasisOrder once mined)</li>
 </ul>
 <h2 id='buydai'>buyDai</h2><pre class="highlight javascript tab-javascript"><code><span class="c1">// Buy 100.00 DAI for 0.30 WETH or less.</span>
-<span class="kr">const</span> <span class="nx">buyOrder</span> <span class="o">=</span> <span class="nx">exchange</span><span class="p">.</span><span class="nx">buyDai</span><span class="p">(</span><span class="s1">'100.0'</span><span class="p">,</span> <span class="s1">'WETH'</span><span class="p">,</span> <span class="s1">'0.35'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">buyOrder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">exchange</span><span class="p">.</span><span class="nx">buyDai</span><span class="p">(</span><span class="s1">'100.0'</span><span class="p">,</span> <span class="s1">'WETH'</span><span class="p">,</span> <span class="s1">'0.35'</span><span class="p">);</span>
 </code></pre>
 <p>Buy a set amount of DAI and give another token in return.</p>
-<h3 id='parameters-2'>Parameters</h3>
+
+<ul>
+<li><strong>Parameters</strong>
+
 <ul>
 <li><code>daiAmount</code> - Amount of DAI to buy.</li>
 <li><code>tokenSymbol</code> - Token to give in return.</li>
 <li><code>minFillAmount</code> - Maximum amount to give in return.</li>
+</ul></li>
+<li><strong>Returns:</strong> promise (resolves to OasisOrder once mined)</li>
 </ul>
+<h2 id='oasisorder'>OasisOrder</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">buyOrder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">exchange</span><span class="p">.</span><span class="nx">buyDai</span><span class="p">(</span><span class="s1">'100.0'</span><span class="p">,</span> <span class="s1">'WETH'</span><span class="p">,</span> <span class="s1">'0.35'</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">fillAmount</span> <span class="o">=</span> <span class="nx">buyOrder</span><span class="p">.</span><span class="nx">fillAmount</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">gasPaid</span> <span class="o">=</span> <span class="nx">buyOrder</span><span class="p">.</span><span class="nx">fees</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">created</span> <span class="o">=</span> <span class="nx">buyOrder</span><span class="p">.</span><span class="nx">created</span><span class="p">();</span>
+</code></pre>
+<p><code>OasisOrders</code> have a few methods:
+    * <code>fillAmount</code>: amount of token received in exchange
+    * <code>fees()</code>: amount of ether spent on gas
+    * <code>created()</code>: timestamp of when transaction was mined</p>
 <h1 id='system-status'>System Status</h1><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">ethCdp</span> <span class="o">=</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'cdp'</span><span class="p">);</span>
 </code></pre>
 <p>To access system status information, retrieve the ETH CDP Service through Maker.service(&#39;cdp&#39;).</p>
@@ -1030,36 +1066,51 @@ OasisExchangeService implementation uses the OasisDEX OTC market for this. </p>
 <td>{ dai }</td>
 </tr>
 </tbody></table>
-<h1 id='transactions'>Transactions</h1><h3 id='basic-usage'>Basic usage</h3><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">cdp</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">openCdp</span><span class="p">();</span>
-</code></pre>
-<p>Each function in our API that creates a transaction on the blockchain returns a
-promise which resolves when the transaction is mined.</p>
-<h3 id='advanced-usage'>Advanced usage</h3><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">cdpPromise</span> <span class="o">=</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">openCdp</span><span class="p">();</span>
+<h1 id='transactions'>Transactions</h1><h3 id='transactionobject-lifecycle-hooks'>TransactionObject Lifecycle Hooks</h3><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">txObject</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">wipeDai</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 
 <span class="c1">// the transaction is being sent to the blockchain;</span>
 <span class="c1">// if not already pending, it will be pending soon</span>
 
-<span class="nx">cdpPromise</span><span class="p">.</span><span class="nx">onPending</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'pending!'</span><span class="p">));</span>
-<span class="nx">cdpPromise</span><span class="p">.</span><span class="nx">onMined</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'mined!'</span><span class="p">));</span>
-<span class="nx">cdpPromise</span><span class="p">.</span><span class="nx">onFinalized</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'finalized!'</span><span class="p">));</span>
+<span class="nx">txObject</span><span class="p">.</span><span class="nx">onPending</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'pending!'</span><span class="p">));</span>
+<span class="nx">txObject</span><span class="p">.</span><span class="nx">onMined</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'mined!'</span><span class="p">));</span>
+<span class="nx">txObject</span><span class="p">.</span><span class="nx">onFinalized</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'finalized!'</span><span class="p">));</span>
+<span class="nx">txObject</span><span class="p">.</span><span class="nx">onError</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'error'</span><span class="p">));</span>
 
-<span class="kr">const</span> <span class="nx">cdp</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdpPromise</span><span class="p">;</span>
-
-<span class="c1">// now the transaction is mined</span>
-<span class="c1">// and the onMined callback has been called</span>
+<span class="kr">const</span> <span class="nx">pending</span> <span class="o">=</span> <span class="nx">txObject</span><span class="p">.</span><span class="nx">isPending</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">mined</span> <span class="o">=</span> <span class="nx">txObject</span><span class="p">.</span><span class="nx">isPending</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">finalized</span> <span class="o">=</span> <span class="nx">txObject</span><span class="p">.</span><span class="nx">isFinalized</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">error</span> <span class="o">=</span> <span class="nx">txObject</span><span class="p">.</span><span class="nx">isError</span><span class="p">();</span>
 
 <span class="c1">// if you are using the onFinalized callback, you have to</span>
 <span class="c1">// call this method at some point.</span>
-<span class="nx">await</span> <span class="nx">cdpPromise</span><span class="p">.</span><span class="nx">confirm</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="nx">await</span> <span class="nx">txObject</span><span class="p">.</span><span class="nx">confirm</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
 <span class="c1">// 5 = the number of blocks to wait; the default is 3</span>
 
 <span class="c1">// now there are five new blocks after the transaction's block</span>
 <span class="c1">// and the onFinalized callback has been called</span>
 </code></pre>
-<p>The promises also have additional methods which can be used to trigger
+<p><code>TransactionObjects</code> have methods which can be used to trigger
 callbacks when the transaction is pending, or after a certain number of new
 blocks have been added after the block containing the transaction (when the
 transaction is &quot;finalized&quot;).</p>
+<h3 id='transactionobject-transaction-data'>TransactionObject Transaction Data</h3><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">txObject</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">drawDai</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">hash</span> <span class="o">=</span> <span class="nx">txObject</span><span class="p">.</span><span class="nx">hash</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">fees</span> <span class="o">=</span> <span class="nx">txObject</span><span class="p">.</span><span class="nx">fees</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">timeStamp</span> <span class="o">=</span> <span class="nx">txObject</span><span class="p">.</span><span class="nx">timeStamp</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">timeStampSubmitted</span> <span class="o">=</span> <span class="nx">txObject</span><span class="p">.</span><span class="nx">timeStampSubmitted</span><span class="p">();</span>
+</code></pre>
+<p><code>TransactionObjects</code> also have a few methods to provide details on the transaction:
+    * <code>hash</code>: transaction hash
+    * <code>fees()</code>: amount of ether spent on gas
+    * <code>timeStamp()</code>: timestamp of when transaction was mined
+    * <code>timeStampSubmitted()</code>: timestamp of when transaction was submitted to the network</p>
+<h3 id='onnewtransaction'>onNewTransaction</h3><pre class="highlight javascript tab-javascript"><code><span class="nx">maker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'transactionManager'</span><span class="p">).</span><span class="nx">onNewTransaction</span><span class="p">(</span><span class="nx">tx</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">tx</span><span class="p">.</span><span class="nx">onPending</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`</span><span class="p">${</span><span class="nx">tx</span><span class="p">.</span><span class="nx">metadata</span><span class="p">.</span><span class="nx">contract</span><span class="p">}</span><span class="s2">.</span><span class="p">${</span><span class="nx">tx</span><span class="p">.</span><span class="nx">metadata</span><span class="p">.</span><span class="nx">method</span><span class="p">}</span><span class="s2">: pending`</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</code></pre>
+<p>The <code>onNewTransaction</code> function in the <code>transactionManager</code> service allows you to register a callback that gets called every time a transaction is initiated by the dai.js library.</p>
 <h1 id='using-multiple-accounts'>Using Multiple Accounts</h1><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">maker</span> <span class="o">=</span> <span class="nx">Maker</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span>
   <span class="na">url</span><span class="p">:</span> <span class="s1">'http://localhost:2000'</span><span class="p">,</span>
   <span class="na">accounts</span><span class="p">:</span> <span class="p">{</span>
