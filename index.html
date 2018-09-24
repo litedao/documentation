@@ -513,7 +513,7 @@ about the newly opened position to the console.</p>
 
 <span class="kr">const</span> <span class="nx">makerHttp</span> <span class="o">=</span> <span class="nx">Maker</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">'http'</span><span class="p">,</span> <span class="p">{</span>
   <span class="na">privateKey</span><span class="p">:</span> <span class="nx">YOUR_PRIVATE_KEY</span><span class="p">,</span>
-  <span class="na">url</span><span class="p">:</span> <span class="s1">'https://sai-service.makerdao.com/node'</span>
+  <span class="na">url</span><span class="p">:</span> <span class="s1">'http://some-ethereum-rpc-node.net'</span>
 <span class="p">});</span>
 
 <span class="kr">const</span> <span class="nx">makerKovan</span> <span class="o">=</span> <span class="nx">Maker</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">'kovan'</span><span class="p">,</span> <span class="p">{</span>
@@ -561,7 +561,7 @@ sign transactions using testnet-managed keys.</li>
 </ul>
 <h2 id='options'>Options</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">maker</span> <span class="o">=</span> <span class="nx">Maker</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">'http'</span><span class="p">,</span> <span class="p">{</span>
   <span class="na">privateKey</span><span class="p">:</span> <span class="nx">YOUR_PRIVATE_KEY</span><span class="p">,</span> <span class="c1">// '0xabc...'</span>
-  <span class="na">url</span><span class="p">:</span> <span class="s1">'https://sai-service.makerdao.com/node'</span><span class="p">,</span>
+  <span class="na">url</span><span class="p">:</span> <span class="s1">'http://some-ethereum-rpc-node.net'</span><span class="p">,</span>
   <span class="na">provider</span><span class="p">:</span> <span class="p">{</span>
     <span class="na">type</span><span class="p">:</span> <span class="s1">'HTTP'</span><span class="p">,</span> <span class="c1">// 'INFURA', 'TEST'</span>
     <span class="na">network</span><span class="p">:</span> <span class="s1">'kovan'</span><span class="p">,</span>
@@ -586,7 +586,6 @@ sign transactions using testnet-managed keys.</li>
 
 <ul>
 <li>The URL of the node to connect to. Only used when <code>provider.type</code> is <code>&quot;HTTP&quot;</code>.</li>
-<li>Default value: <code>&quot;https://sai-service.makerdao.com/node&quot;</code></li>
 </ul></li>
 <li><code>provider.infuraApiKey</code>
 
