@@ -575,8 +575,9 @@ sign transactions using testnet-managed keys.</li>
     <span class="na">transactionSettings</span><span class="p">:</span> <span class="p">{</span>
       <span class="na">gasPrice</span><span class="p">:</span> <span class="mi">12000000000</span>
     <span class="p">}</span>
-  <span class="p">}</span>
-  <span class="nl">log</span><span class="p">:</span> <span class="kc">false</span>
+  <span class="p">},</span>
+  <span class="na">log</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="na">confirmedBlockCount</span><span class="p">:</span> <span class="mi">8</span>
 <span class="p">});</span>
 </code></pre>
 <ul>
@@ -618,6 +619,11 @@ sign transactions using testnet-managed keys.</li>
 
 <ul>
 <li>Set this to <code>false</code> to reduce the verbosity of logging.</li>
+</ul></li>
+<li><code>confirmedBlockCount</code>
+
+<ul>
+<li>Number of blocks to wait after a transaction has been mined. See <a href="#transactions">transactions</a> for further explanation. Default is 5.</li>
 </ul></li>
 </ul>
 <h2 id='authenticate'><strong>authenticate</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="nx">await</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">authenticate</span><span class="p">();</span>
@@ -1087,19 +1093,19 @@ OasisExchangeService implementation uses the OasisDEX OTC market for this.</p>
   <span class="na">error</span><span class="p">:</span> <span class="nx">tx</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// do someting when tx fails</span>
   <span class="p">}</span>
-<span class="p">})</span>
+<span class="p">});</span>
 
-<span class="nx">await</span> <span class="nx">txMgr</span><span class="p">.</span><span class="nx">confirm</span><span class="p">(</span><span class="nx">open</span><span class="p">);</span> <span class="c1">// confirmed will fire</span>
+<span class="nx">await</span> <span class="nx">txMgr</span><span class="p">.</span><span class="nx">confirm</span><span class="p">(</span><span class="nx">open</span><span class="p">);</span> <span class="c1">// confirmed will fire after 5 blocks if default</span>
 </code></pre>
 <p>Accessing these status callbacks is done through the <code>listen</code> function from the <code>transactionManager</code> service. The listen function takes a promise and a callback object with the transaction status as a key.</p>
 
-<p>One caveat is that the <code>confirmed</code> event will not fire unless the <code>transactionManager</code> confirms the promise.</p>
-<h3 id='transaction-metadata'>Transaction Metadata</h3><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">lock</span> <span class="o">=</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">lockEth</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="nx">txMgr</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">open</span><span class="p">,</span> <span class="p">{</span>
+<p>One caveat is that the <code>confirmed</code> event will not fire unless the <code>transactionManager</code> confirms the promise. This <code>confirm()</code> function waits on a number of blocks after the transaction has been mined, of which the default is 5, to resolve. To change this, the <code>confirmedBlockCount</code> attribute in the <a href="#options">options</a> object can be modified. </p>
+<h3 id='transaction-metadata'>Transaction Metadata</h3><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">lock</span> <span class="o">=</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">lockEth</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="nx">txMgr</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">lock</span><span class="p">,</span> <span class="p">{</span>
   <span class="na">pending</span><span class="p">:</span> <span class="nx">tx</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="kr">const</span> <span class="p">{</span><span class="nx">contract</span><span class="p">,</span> <span class="nx">method</span><span class="p">}</span> <span class="o">=</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">metadata</span><span class="p">;</span>
     <span class="k">if</span><span class="p">(</span><span class="nx">contract</span> <span class="o">===</span> <span class="s1">'WETH'</span> <span class="o">&amp;&amp;</span> <span class="nx">method</span> <span class="o">===</span> <span class="s1">'deposit'</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">tx</span><span class="p">.</span><span class="nx">hash</span><span class="p">)</span> <span class="c1">// print hash for WETH.deposit</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">tx</span><span class="p">.</span><span class="nx">hash</span><span class="p">);</span> <span class="c1">// print hash for WETH.deposit</span>
     <span class="p">}</span>
   <span class="p">}</span>
 <span class="p">})</span>
