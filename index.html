@@ -1073,7 +1073,7 @@ OasisExchangeService implementation uses the OasisDEX OTC market for this.</p>
 <span class="kr">const</span> <span class="nx">open</span> <span class="o">=</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'cdp'</span><span class="p">).</span><span class="nx">openCdp</span><span class="p">();</span>
 <span class="c1">// open is a transactionObject when promise resolves</span>
 </code></pre>
-<p>The <code>transactionManager</code> service is used to access and monitor <code>TransactionObjects</code> which can be used to track a transaction&#39;s status as it propagates through the blockchain. <code>TransactionObjects</code> have methods which trigger callbacks in the event of a transaction&#39;s status being <code>pending</code>, <code>mined</code>, <code>confirmed</code> and <code>error</code>.</p>
+<p>The <code>transactionManager</code> service is used to access and monitor <code>TransactionObjects</code> which can be used to track a transaction&#39;s status as it propagates through the blockchain. <code>TransactionObjects</code> have methods which trigger callbacks in the event of a transaction&#39;s status being <code>pending</code>, <code>mined</code>, <code>confirmed</code> or <code>error</code>.</p>
 <h3 id='listen'>Listen</h3><pre class="highlight javascript tab-javascript"><code><span class="nx">txMgr</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">open</span><span class="p">,</span> <span class="p">{</span>
   <span class="na">pending</span><span class="p">:</span> <span class="nx">tx</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// do something when tx is pending</span>
@@ -1107,7 +1107,7 @@ OasisExchangeService implementation uses the OasisDEX OTC market for this.</p>
 </code></pre>
 <p>There are functions such as <code>lockEth()</code> which are composed of several internal transactions. These can be more accurately tracked by accessing the <code>tx.metadata</code> in the callback which contains both the <code>contract</code> and the <code>method</code> the internal transactions were created from.</p>
 <h3 id='transactionobject-methods'>TransactionObject Methods</h3>
-<p>A <code>TransactionObjects</code> also has a few methods to provide further details on the transaction:</p>
+<p>A <code>TransactionObject</code> also has a few methods to provide further details on the transaction:</p>
 
 <ul>
 <li><code>hash</code> : transaction hash</li>
