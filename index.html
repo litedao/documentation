@@ -677,9 +677,9 @@ sign transactions using testnet-managed keys.</li>
 <span class="nx">cdp</span><span class="p">.</span><span class="nx">lockEth</span><span class="p">(</span><span class="nx">ETH</span><span class="p">(</span><span class="mf">0.25</span><span class="p">));</span>
 <span class="nx">cdp</span><span class="p">.</span><span class="nx">lockEth</span><span class="p">(</span><span class="nx">ETH</span><span class="p">.</span><span class="nx">wei</span><span class="p">(</span><span class="mi">250000000000000000</span><span class="p">));</span>
 
-<span class="c1">// you can pass the unit as a second argument</span>
-<span class="nx">cdp</span><span class="p">.</span><span class="nx">lockEth</span><span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="nx">ETH</span><span class="p">);</span>
-<span class="nx">cdp</span><span class="p">.</span><span class="nx">lockEth</span><span class="p">(</span><span class="mi">250000000000000000</span><span class="p">,</span> <span class="nx">ETH</span><span class="p">.</span><span class="nx">wei</span><span class="p">);</span>
+<span class="c1">// you can pass the unit as an options argument</span>
+<span class="nx">cdp</span><span class="p">.</span><span class="nx">lockEth</span><span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="p">{</span> <span class="na">unit</span><span class="p">:</span> <span class="nx">ETH</span> <span class="p">});</span>
+<span class="nx">cdp</span><span class="p">.</span><span class="nx">lockEth</span><span class="p">(</span><span class="mi">250000000000000000</span><span class="p">,</span> <span class="p">{</span> <span class="na">unit</span><span class="p">:</span> <span class="nx">ETH</span><span class="p">.</span><span class="nx">wei</span> <span class="p">});</span>
 
 <span class="kr">const</span> <span class="nx">eth</span> <span class="o">=</span> <span class="nx">ETH</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
 <span class="nx">eth</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="o">==</span> <span class="s1">'5.00 ETH'</span><span class="p">;</span>
