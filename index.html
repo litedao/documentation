@@ -1139,10 +1139,14 @@ OasisExchangeService implementation uses the OasisDEX OTC market for this.</p>
 
 <span class="nx">maker</span><span class="p">.</span><span class="nx">useAccount</span><span class="p">(</span><span class="s1">'yetAnother'</span><span class="p">);</span>
 <span class="kr">const</span> <span class="nx">cdp3</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">openCdp</span><span class="p">();</span> <span class="c1">// owned by "yetAnother"</span>
+
+<span class="nx">await</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">addAccount</span><span class="p">({</span><span class="na">type</span><span class="p">:</span> <span class="nx">privateKey</span><span class="p">,</span> <span class="na">key</span><span class="p">:</span> <span class="nx">fourthAccount</span><span class="p">.</span><span class="nx">key</span><span class="p">});</span> <span class="c1">// the name argument is optional</span>
+<span class="nx">maker</span><span class="p">.</span><span class="nx">useAccountWithAddress</span><span class="p">(</span><span class="nx">fourthAccount</span><span class="p">.</span><span class="nx">address</span><span class="p">)</span>
+<span class="kr">const</span> <span class="nx">cdp4</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">openCdp</span><span class="p">();</span> <span class="c1">//owned by the fourth account</span>
 </code></pre>
 <p>The library supports the use of multiple accounts (i.e. private keys) within a single Maker instance. Accounts can be specified in the constructor options or with the <code>addAccount</code> method.</p>
 
-<p>Call <code>useAccount</code> to switch to using an account by its name, and subsequent calls will use that account as the transaction signer.</p>
+<p>Call <code>useAccount</code> to switch to using an account by its name, or <code>useAccountWithAddress</code> to switch to using an account by its address, and subsequent calls will use that account as the transaction signer.</p>
 
 <p>When the Maker instance is first created, it will use the account named <code>default</code> if it exists, or the first account in the list otherwise.</p>
 <h2 id='account-types'>Account types</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">maker</span> <span class="o">=</span> <span class="nx">Maker</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span>
