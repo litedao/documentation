@@ -786,7 +786,7 @@ the price of ETH in USD.</p>
 </ul>
 
 <p><code>cdp.isSafe()</code> returns true if the cdp is safe, that is, if the USD value of its collateral is greater than or equal to USD value of the its debt multiplied by the liquidation ratio.</p>
-<h2 id='enoughmkrtowipe'><strong>enoughMkrToWipe</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">enoughMkrToWipe</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">enoughMkrToWipe</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<h2 id='enoughmkrtowipe'><strong>enoughMkrToWipe</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">enoughMkrToWipe</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">enoughMkrToWipe</span><span class="p">(</span><span class="mi">10000000000000000000</span><span class="p">,</span> <span class="nx">DAI</span><span class="p">.</span><span class="nx">wei</span><span class="p">);</span>
 </code></pre>
 <ul>
 <li><strong>Params:</strong> amount of Dai to wipe</li>
