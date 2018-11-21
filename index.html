@@ -262,7 +262,7 @@
             <a href="#cdp" class="toc-h1 toc-link" data-title="cdp">CDP</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#getid" class="toc-h2 toc-link" data-title="strong-getid-strong"><strong>getId</strong></a>
+                    <a href="#properties" class="toc-h2 toc-link" data-title="strong-properties-strong"><strong>Properties</strong></a>
                   </li>
                   <li>
                     <a href="#getdebtvalue" class="toc-h2 toc-link" data-title="strong-getdebtvalue-strong"><strong>getDebtValue</strong></a>
@@ -490,8 +490,7 @@
 
 <span class="nx">maker</span><span class="p">.</span><span class="nx">authenticate</span><span class="p">()</span>
   <span class="p">.</span><span class="nx">then</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">openCdp</span><span class="p">())</span>
-  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">cdp</span> <span class="o">=&gt;</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getId</span><span class="p">())</span>
-  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">id</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
+  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">cdp</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">cdp</span><span class="p">.</span><span class="nx">id</span><span class="p">));</span>
 <span class="nt">&lt;/script&gt;</span>
 </code></pre>
 <p>This library is also accessible as a <a href="https://github.com/umdjs/umd">UMD module</a>.</p>
@@ -725,14 +724,8 @@ the price of ETH in USD.</p>
 </ul>
 <h1 id='cdp'>CDP</h1>
 <p>Now that you&#39;ve used <code>maker</code> to either open a new CDP or retrieve an existing one, you can use the returned <code>cdp</code> object to call functions on it.</p>
-<h2 id='getid'><strong>getId</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getId</span><span class="p">();</span>
-</code></pre>
-<ul>
-<li><strong>Params:</strong> none</li>
-<li><strong>Returns:</strong> promise (resolves to CDP ID)</li>
-</ul>
-
-<p>Use <code>cdp.getId()</code> to retrieve the ID from a CDP object. You can pass this ID to
+<h2 id='properties'><strong>Properties</strong></h2><h3 id='id'><code>.id</code></h3>
+<p>This is the ID of the CDP object. You can pass this ID to
 <a href="#getcdp"><code>Maker.getCdp</code></a>.</p>
 <h2 id='getdebtvalue'><strong>getDebtValue</strong></h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">daiDebt</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getDebtValue</span><span class="p">();</span>
 <span class="kr">const</span> <span class="nx">usdDebt</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">cdp</span><span class="p">.</span><span class="nx">getDebtValue</span><span class="p">(</span><span class="nx">Maker</span><span class="p">.</span><span class="nx">USD</span><span class="p">);</span>
