@@ -419,6 +419,29 @@
               </ul>
           </li>
           <li>
+            <a href="#using-dsproxy" class="toc-h1 toc-link" data-title="using-dsproxy">Using DSProxy</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#currentproxy" class="toc-h2 toc-link" data-title="currentproxy">currentProxy</a>
+                  </li>
+                  <li>
+                    <a href="#build" class="toc-h2 toc-link" data-title="build">build</a>
+                  </li>
+                  <li>
+                    <a href="#execute" class="toc-h2 toc-link" data-title="execute">execute</a>
+                  </li>
+                  <li>
+                    <a href="#getproxyaddress" class="toc-h2 toc-link" data-title="getproxyaddress">getProxyAddress</a>
+                  </li>
+                  <li>
+                    <a href="#getowner" class="toc-h2 toc-link" data-title="getowner">getOwner</a>
+                  </li>
+                  <li>
+                    <a href="#setowner" class="toc-h2 toc-link" data-title="setowner">setOwner</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
             <a href="#developing" class="toc-h1 toc-link" data-title="developing">Developing</a>
               <ul class="toc-list-h2">
                   <li>
@@ -460,7 +483,7 @@
 
 <p><strong>Dai.js</strong> is a JavaScript library that makes it easy to build applications on top of MakerDAO&#39;s platform of smart contracts. You can use Maker&#39;s contracts to open Collateralized Debt Positions (CDPs), withdraw loans in Dai, trade tokens on OasisDEX, and more.</p>
 
-<p>The library features a pluggable, service-based architecture, which allows users maximal control when integrating the Maker functionality into existing infrastructures. It also includes convenient configuration presets for out-of-the-box usability, a powerful smart contract state inspector, and support for both front-end and back-end applications.</p>
+<p>The library features a pluggable, service-based architecture, which allows users maximal control when integrating the Maker functionality into existing infrastructures. It also includes convenient configuration presets for out-of-the-box usability and support for both front-end and back-end applications.</p>
 
 <p>Maker&#39;s entire suite of contracts will eventually be accessible through this library—including the DAO governance and the upcoming multi-collateral release—but functionality is limited in the current alpha version to the following areas:</p>
 
@@ -1199,6 +1222,111 @@ OasisExchangeService implementation uses the OasisDEX OTC market for this.</p>
 </ul>
 <h2 id='demo'>Demo</h2>
 <p>Install the <a href="https://github.com/makerdao/integration-examples/tree/master/accounts">multiple accounts demo app</a> to see this functionality in action.</p>
+<h1 id='using-dsproxy'>Using DSProxy</h1>
+<p>The <code>DSProxyService</code> includes all the functionality necessary for interacting with both types of proxies found in Maker products: <em>profile proxies</em> and <em>forwarding proxies</em>.</p>
+
+<p>Forwarding proxies are simple contracts that aggregate function calls in the body of a single method. These are used in the <a href="https://github.com/makerdao/sai-proxy">CDP Portal</a> and <a href="https://github.com/makerdao/oasis-direct-proxy">Oasis Direct</a> in order to allow users to execute multiple transactions atomically, which is both safer and more user-friendly than implementing several steps as discrete transactions.</p>
+<pre class="highlight javascript tab-javascript"><code><span class="c1">// Forwarding proxy</span>
+
+<span class="kd">function</span> <span class="nx">lockAndDraw</span><span class="p">(</span><span class="nx">address</span> <span class="nx">tub_</span><span class="p">,</span> <span class="nx">bytes32</span> <span class="nx">cup</span><span class="p">,</span> <span class="nx">uint</span> <span class="nx">wad</span><span class="p">)</span> <span class="kr">public</span> <span class="nx">payable</span> <span class="p">{</span>
+  <span class="nx">lock</span><span class="p">(</span><span class="nx">tub_</span><span class="p">,</span> <span class="nx">cup</span><span class="p">);</span>
+  <span class="nx">draw</span><span class="p">(</span><span class="nx">tub_</span><span class="p">,</span> <span class="nx">cup</span><span class="p">,</span> <span class="nx">wad</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+<p>Forwarding proxies are meant to be as simple as possible, so they lack some features that could be important if they are to be used as interfaces for more complex smart contract logic. This problem can be solved by using profile proxies (i.e., copies of <a href="https://github.com/dapphub/ds-proxy">DSProxy</a>) to execute the functionality defined in the forwarding proxies.</p>
+
+<p>The first time an account is used to interact with any Maker application, the user will be prompted to deploy a profile proxy. This copy of DSProxy can be used in any product, including dai.js, by way of a universal <a href="https://github.com/makerdao/proxy-registry/tree/master">proxy registry</a>. Then, the calldata from any function in the forwarding proxy can be passed to DSProxy&#39;s <code>execute()</code> method, which runs the provided code in the context of the profile proxy.</p>
+
+<p>This makes it possible for users&#39; token allowances to persist from one Maker application to another, and it allows users to <a href="https://proxy-recover-funds.surge.sh/">recover any funds</a> mistakenly sent to the proxy&#39;s address.</p>
+
+<p>Many of the functions in <code>DSProxyService</code> will only be relevant to <code>power users</code>. All that is strictly required to automatically generate a function&#39;s calldata and find the correct profile proxy is the inclusion of <code>{ dsProxy: true }</code> in the options object for any transaction — provided the user has already deployed a profile proxy. If that&#39;s not certain, it may also be necessary to query the registry to determine if a user already owns a proxy, and to <code>build</code> one if they do not.</p>
+<pre class="highlight javascript tab-javascript"><code><span class="c1">// Calling the forwarding proxy with dai.js</span>
+
+<span class="kd">function</span> <span class="nx">lockAndDraw</span><span class="p">(</span><span class="nx">tubContractAddress</span><span class="p">,</span> <span class="nx">cdpId</span><span class="p">,</span> <span class="nx">daiAmount</span><span class="p">,</span> <span class="nx">ethAmount</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="nx">saiProxy</span> <span class="o">=</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'smartContract'</span><span class="p">).</span><span class="nx">getContractByName</span><span class="p">(</span><span class="s1">'SAI_PROXY'</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="nx">saiProxy</span><span class="p">.</span><span class="nx">lockAndDraw</span><span class="p">(</span>
+    <span class="nx">tubContractAddress</span><span class="p">,</span>
+    <span class="nx">cdpId</span><span class="p">,</span>
+    <span class="nx">daiAmount</span><span class="p">,</span>
+    <span class="p">{</span>
+      <span class="na">value</span><span class="p">:</span> <span class="nx">ethAmount</span><span class="p">,</span>
+      <span class="na">dsProxy</span><span class="p">:</span> <span class="kc">true</span>
+    <span class="p">}</span>
+  <span class="p">);</span>
+<span class="p">}</span>
+
+</code></pre><h2 id='currentproxy'>currentProxy</h2><pre class="highlight javascript tab-javascript"><code><span class="kd">function</span> <span class="nx">getProxy</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'proxy'</span><span class="p">).</span><span class="nx">currentProxy</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre>
+<ul>
+<li><strong>Params:</strong> None</li>
+<li><strong>Returns:</strong> Address <strong>or</strong> <code>null</code></li>
+</ul>
+
+<p>If the <code>currentAccount</code> (according the <code>Web3Service</code>) has already deployed a DSProxy, <code>currentProxy()</code> returns its address. If not, it returns <code>null</code>. It will update automatically in the event that the active account is changed.</p>
+
+<p>This function should be used to check whether a user has a proxy before attempting to build one.</p>
+<h2 id='build'>build</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">async</span> <span class="kd">function</span> <span class="nx">buildProxy</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="nx">proxyService</span> <span class="o">=</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'proxy'</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">proxyService</span><span class="p">.</span><span class="nx">currentProxy</span><span class="p">())</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">await</span> <span class="nx">proxyService</span><span class="p">.</span><span class="nx">build</span><span class="p">();</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+<ul>
+<li><strong>Params:</strong> None</li>
+<li><strong>Returns:</strong> <code>TransactionObject</code></li>
+</ul>
+
+<p><code>build</code> will deploy a copy of DSProxy owned by the current account. <strong>This transaction will revert if the current account already owns a profile proxy.</strong></p>
+
+<p>By default, <code>build()</code> returns after the transaction is mined.</p>
+<h2 id='execute'>execute</h2><pre class="highlight javascript tab-javascript"><code><span class="kd">function</span> <span class="nx">lockAndDraw</span><span class="p">(</span><span class="nx">tubContractAddress</span><span class="p">,</span> <span class="nx">cdpId</span><span class="p">,</span> <span class="nx">daiAmount</span><span class="p">,</span> <span class="nx">ethAmount</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="nx">saiProxy</span> <span class="o">=</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'smartContract'</span><span class="p">).</span><span class="nx">getContractByName</span><span class="p">(</span><span class="s1">'SAI_PROXY'</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="nx">saiProxy</span><span class="p">.</span><span class="nx">lockAndDraw</span><span class="p">(</span>
+    <span class="nx">tubContractAddress</span><span class="p">,</span>
+    <span class="nx">cdpId</span><span class="p">,</span>
+    <span class="nx">daiAmount</span><span class="p">,</span>
+    <span class="p">{</span>
+      <span class="na">value</span><span class="p">:</span> <span class="nx">ethAmount</span><span class="p">,</span>
+      <span class="na">dsProxy</span><span class="p">:</span> <span class="kc">true</span>
+    <span class="p">}</span>
+  <span class="p">);</span>
+<span class="p">}</span>
+
+</code></pre>
+<p>This function is designed to be called by the <code>TransactionManager</code>, not accessed directly. As long as the target contract is defined by the <code>SmartContractService</code>, the inclusion of the <code>dsProxy</code> key in the options for any transaction will automatically forward the transaction to the <code>DSProxyService</code>.</p>
+
+<p>The value of <code>dsProxy</code> can either be <code>true</code> or an explicitly provided DSProxy address.</p>
+<h2 id='getproxyaddress'>getProxyAddress</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">proxy</span> <span class="o">=</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'proxy'</span><span class="p">).</span><span class="nx">getProxyAddress</span><span class="p">(</span><span class="s1">'0x...'</span><span class="p">);</span>
+</code></pre>
+<ul>
+<li><strong>Params:</strong> Address (optional)</li>
+<li><strong>Returns:</strong> Contract address</li>
+</ul>
+
+<p><code>getProxyAddress</code> will query the proxy registry for the profile proxy address associated with a given account. If no address is provided as a parameter, the function will return the address of the proxy owned by the <code>currentAccount</code>.</p>
+<h2 id='getowner'>getOwner</h2><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">owner</span> <span class="o">=</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'proxy'</span><span class="p">).</span><span class="nx">getOwner</span><span class="p">(</span><span class="s1">'0x...'</span><span class="p">);</span>
+</code></pre>
+<ul>
+<li><strong>Params:</strong> Address</li>
+<li><strong>Returns:</strong> Address</li>
+</ul>
+
+<p><code>getOwner</code> will query the proxy registry for the owner of a provided instance of DSProxy.</p>
+<h2 id='setowner'>setOwner</h2><pre class="highlight javascript tab-javascript"><code><span class="nx">async</span> <span class="kd">function</span> <span class="nx">giveProxy</span><span class="p">(</span><span class="nx">newOwner</span><span class="p">,</span> <span class="nx">proxyAddress</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">await</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'proxy'</span><span class="p">).</span><span class="nx">setOwner</span><span class="p">(</span><span class="nx">newOwner</span><span class="p">,</span> <span class="nx">proxyAddress</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+<ul>
+<li><strong>Params:</strong> Address of new owner, DSProxy address (optional)</li>
+<li><strong>Returns:</strong> <code>TransactionObject</code></li>
+</ul>
+
+<p><code>setOwner</code> can be used to give a profile proxy to a new owner. The address of the recipient account must be specified, but the DSProxy address will default to <code>currentProxy</code> if the second parameter is excluded.</p>
 <h1 id='developing'>Developing</h1>
 <ol>
 <li><code>git clone https://github.com/makerdao/makerdao-integration-poc</code></li>
