@@ -1236,10 +1236,6 @@ OasisExchangeService implementation uses the OasisDEX OTC market for this.</p>
 <p>Forwarding proxies are meant to be as simple as possible, so they lack some features that could be important if they are to be used as interfaces for more complex smart contract logic. This problem can be solved by using profile proxies (i.e., copies of <a href="https://github.com/dapphub/ds-proxy">DSProxy</a>) to execute the functionality defined in the forwarding proxies.</p>
 
 <p>The first time an account is used to interact with any Maker application, the user will be prompted to deploy a profile proxy. This copy of DSProxy can be used in any product, including dai.js, by way of a universal <a href="https://github.com/makerdao/proxy-registry/tree/master">proxy registry</a>. Then, the calldata from any function in the forwarding proxy can be passed to DSProxy&#39;s <code>execute()</code> method, which runs the provided code in the context of the profile proxy.</p>
-
-<p>This makes it possible for users&#39; token allowances to persist from one Maker application to another, and it allows users to <a href="https://proxy-recover-funds.surge.sh/">recover any funds</a> mistakenly sent to the proxy&#39;s address.</p>
-
-<p>Many of the functions in <code>DSProxyService</code> will only be relevant to <code>power users</code>. All that is strictly required to automatically generate a function&#39;s calldata and find the correct profile proxy is the inclusion of <code>{ dsProxy: true }</code> in the options object for any transaction — provided the user has already deployed a profile proxy. If that&#39;s not certain, it may also be necessary to query the registry to determine if a user already owns a proxy, and to <code>build</code> one if they do not.</p>
 <pre class="highlight javascript tab-javascript"><code><span class="c1">// Calling the forwarding proxy with dai.js</span>
 
 <span class="kd">function</span> <span class="nx">lockAndDraw</span><span class="p">(</span><span class="nx">tubContractAddress</span><span class="p">,</span> <span class="nx">cdpId</span><span class="p">,</span> <span class="nx">daiAmount</span><span class="p">,</span> <span class="nx">ethAmount</span><span class="p">)</span> <span class="p">{</span>
@@ -1256,7 +1252,11 @@ OasisExchangeService implementation uses the OasisDEX OTC market for this.</p>
   <span class="p">);</span>
 <span class="p">}</span>
 
-</code></pre><h2 id='currentproxy'>currentProxy</h2><pre class="highlight javascript tab-javascript"><code><span class="kd">function</span> <span class="nx">getProxy</span><span class="p">()</span> <span class="p">{</span>
+</code></pre>
+<p>This makes it possible for users&#39; token allowances to persist from one Maker application to another, and it allows users to <a href="https://proxy-recover-funds.surge.sh/">recover any funds</a> mistakenly sent to the proxy&#39;s address.</p>
+
+<p>Many of the functions in <code>DSProxyService</code> will only be relevant to <code>power users</code>. All that is strictly required to automatically generate a function&#39;s calldata and find the correct profile proxy is the inclusion of <code>{ dsProxy: true }</code> in the options object for any transaction — provided the user has already deployed a profile proxy. If that&#39;s not certain, it may also be necessary to query the registry to determine if a user already owns a proxy, and to <code>build</code> one if they do not.</p>
+<h2 id='currentproxy'>currentProxy</h2><pre class="highlight javascript tab-javascript"><code><span class="kd">function</span> <span class="nx">getProxy</span><span class="p">()</span> <span class="p">{</span>
   <span class="k">return</span> <span class="nx">maker</span><span class="p">.</span><span class="nx">service</span><span class="p">(</span><span class="s1">'proxy'</span><span class="p">).</span><span class="nx">currentProxy</span><span class="p">();</span>
 <span class="p">}</span>
 </code></pre>
