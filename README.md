@@ -3,7 +3,7 @@
 
 ### Want to read the docs?
 
-Go to [makerdao.com/documentation](https://makerdao.com/documentation).
+Go to [developer.vapordao.com/documentation/](https://developer.vapordao.com/documentation/n).
 
 ### Want to edit the docs?
 
